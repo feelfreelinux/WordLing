@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent">
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_alignParentTop="true"
+        android:id="@+id/progress"
+        />
+    <TextView
+        android:id="@+id/wordView"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_below="@id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/wordInput"
+        android:layout_below="@id/wordView"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:maxLines="1"
+        android:focusableInTouchMode="true"
+        android:imeOptions="actionDone"/>
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/checkButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:theme="@style/Check.Button"
+        android:textSize="25dp"
+        android:layout_width="match_parent" />
+
+</RelativeLayout>

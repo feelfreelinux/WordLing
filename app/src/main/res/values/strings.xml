@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Word Ling</string>
+    <string name="wordpacksListTitle">Select Word Pack</string>
+    <string name="nextButton">Next</string>
+    <string name="checkButton">Check</string>
+    <string name="activityCloseConfirmationTitle">Exit Training</string>
+    <string name="activityCloseConfirmation">Are you sure you want to exit this training?</string>
+    <string name="wordpackImportButton">Import wordpack</string>
+    <string name="wordpackImportTitle">Import wordpack from web</string>
+    <string name="urlAddress">URL address</string>
+</resources>

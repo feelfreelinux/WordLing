@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Word Ling</string>
+    <string name="activityCloseConfirmation">Czy na pewno chcesz wyjść z tego treningu?</string>
+    <string name="activityCloseConfirmationTitle">Wyjdź z Treningu</string>
+    <string name="checkButton">Sprawdź</string>
+    <string name="nextButton">Dalej</string>
+    <string name="wordpacksListTitle">Wybierz paczkę słówek</string>
+    <string name="wordpackImportButton">Zaimportuj paczkę słówek</string>
+    <string name="wordpackImportTitle">Zaimportuj paczkę słówek z sieci</string>
+    <string name="urlAddress">Adres URL</string>
+</resources>
