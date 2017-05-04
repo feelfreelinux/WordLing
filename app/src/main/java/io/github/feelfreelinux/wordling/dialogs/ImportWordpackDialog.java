@@ -18,6 +18,7 @@ public class ImportWordpackDialog extends DialogFragment {
     EditText urlEdit;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        // Construct custom dialog with editText
         Resources res = getResources();
         LayoutInflater inflater = getActivity().getLayoutInflater();
 

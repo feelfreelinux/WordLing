@@ -10,18 +10,18 @@ import io.github.feelfreelinux.wordling.objects.Wordpack;
 
 public class SortedSessionManager implements Serializable {
     private Wordpack wordpack;
-    private ArrayList<Word> sortedList;
     private int iterator = 0;
     private int passed = 0;
     private String key;
+    private int wordCount;
 
     public SortedSessionManager(Wordpack wordpack, String key) {
         this.wordpack = wordpack;
-        this.sortedList = wordpack.pack;
+        this.wordCount = wordpack.pack.size();
         this.key = key;
 
         // Sort word pack, by the correct anwsers rate
-        Collections.sort(this.sortedList, new Comparator<Word>() {
+        Collections.sort(this.wordpack.pack, new Comparator<Word>() {
             @Override
             public int compare(Word o1, Word o2) {
                 try {
@@ -41,11 +41,11 @@ public class SortedSessionManager implements Serializable {
     }
 
     public int getWordCount(){
-        return wordpack.pack.size();
+        return wordCount;
     }
 
     public int getTotalWordCount(){
-        return sortedList.size();
+        return wordpack.pack.size();
     }
 
     public int getProgressCount() {
@@ -59,8 +59,8 @@ public class SortedSessionManager implements Serializable {
     public int getPassedCount() { return passed; }
 
     public Word getNextWord() {
-        if (getWordCount() != getProgressCount()) {
-            Word word = sortedList.get(iterator);
+        if (getTotalWordCount() != getProgressCount()) {
+            Word word = this.wordpack.pack.get(iterator);
             iterator++;
             return word;
         } else return null;
@@ -69,6 +69,6 @@ public class SortedSessionManager implements Serializable {
     public void addWord(Word word){
         Word clonedWord = word.clone();
         clonedWord.setRepeated();
-        sortedList.add(clonedWord);
+        this.wordpack.pack.add(clonedWord);
     }
 }

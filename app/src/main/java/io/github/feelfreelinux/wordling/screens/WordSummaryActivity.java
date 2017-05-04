@@ -23,7 +23,7 @@ public class WordSummaryActivity extends PortraitActivity {
     SortedSessionManager manager;
     ProgressBar progressBar;
     Button nextButton;
-    TextView result;
+    TextView result, messageBox;
     Vibrator vibrator;
     boolean passed;
     @Override
@@ -47,19 +47,24 @@ public class WordSummaryActivity extends PortraitActivity {
         // Set progress status
         progressBar = (ProgressBar) findViewById(R.id.progress);
         progressBar.setMax(manager.getTotalWordCount());
-        progressBar.setProgress(manager.getProgressCount());
+        progressBar.setProgress(manager.getProgressCount()-1);
 
         passed = getIntent().getBooleanExtra("PASSED", false);
         iconView = (ImageView) findViewById(R.id.icon);
+        messageBox = (TextView) findViewById(R.id.messageBox);
 
         // Icon to show.
         Drawable icon;
         if (passed) {
             icon = ContextCompat.getDrawable(this, R.drawable.icon_correct);
-            manager.passed();
+            messageBox.setText(res.getString(R.string.correctAnswer));
+            // Only count word pas passed if word is not "repeated"
+            if(!getIntent().getBooleanExtra("REPEATED", true)) manager.passed();
+
         }
         else {
             vibrator.vibrate(250);
+            messageBox.setText(res.getString(R.string.incorrectAnswer));
             icon = ContextCompat.getDrawable(this, R.drawable.icon_incorrect);
         }
         iconView.setImageDrawable(icon);
@@ -73,7 +78,7 @@ public class WordSummaryActivity extends PortraitActivity {
             @Override
             public void onClick(View v) {
                 // Check are there any words
-                if (manager.getProgressCount() != manager.getWordCount()) {
+                if (manager.getProgressCount() != manager.getTotalWordCount()) {
                     // Start another input activity
                     Intent inputScreen = new Intent(getApplicationContext(), WordInputActivity.class);
                     inputScreen.putExtra("SortedSessionManager", manager);

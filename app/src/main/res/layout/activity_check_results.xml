@@ -9,16 +9,22 @@
         android:layout_alignParentTop="true"
         android:id="@+id/progress"
         />
+    <TextView
+        android:id="@+id/messageBox"
+        android:textSize="40dp"
+        android:gravity="center"
+        android:layout_below="@id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <ImageView
         android:id="@+id/icon"
-        android:layout_below="@id/progress"
+        android:layout_below="@id/messageBox"
         android:layout_centerHorizontal="true"
         android:layout_height="200dp"
         android:layout_width="200dp"/>
     <TextView
         android:id="@+id/wordView"
-        android:text="Sample text"
-        android:textSize="25dp"
+        android:textSize="30dp"
         android:textStyle="bold"
         android:gravity="center"
         android:layout_below="@id/icon"

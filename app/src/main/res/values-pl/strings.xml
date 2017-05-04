@@ -9,4 +9,7 @@
     <string name="wordpackImportButton">Zaimportuj paczkę słówek</string>
     <string name="wordpackImportTitle">Zaimportuj paczkę słówek z sieci</string>
     <string name="urlAddress">Adres URL</string>
+    <string name="correctAnswer">Prawidłowa odpowiedź</string>
+    <string name="incorrectAnswer">Błędna odpowiedź</string>
+    <string name="result">Wynik</string>
 </resources>

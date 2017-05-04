@@ -49,7 +49,7 @@ public class WordInputActivity extends PortraitActivity {
         // Set progress status
         progressBar = (ProgressBar) findViewById(R.id.progress);
         progressBar.setMax(manager.getTotalWordCount());
-        progressBar.setProgress(manager.getProgressCount());
+        progressBar.setProgress(manager.getProgressCount()-1);
 
         // Set text to text View
         wordView = (TextView) findViewById(R.id.wordView);

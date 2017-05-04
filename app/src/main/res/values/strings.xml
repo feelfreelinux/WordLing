@@ -8,4 +8,7 @@
     <string name="wordpackImportButton">Import wordpack</string>
     <string name="wordpackImportTitle">Import wordpack from web</string>
     <string name="urlAddress">URL address</string>
+    <string name="correctAnswer">Correct answer</string>
+    <string name="incorrectAnswer">Incorrect Answer</string>
+    <string name="result">Result</string>
 </resources>
