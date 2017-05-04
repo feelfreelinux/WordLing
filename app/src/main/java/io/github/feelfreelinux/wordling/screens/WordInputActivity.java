@@ -88,7 +88,7 @@ public class WordInputActivity extends PortraitActivity {
         Intent intent = new Intent(this, WordSummaryActivity.class);
         intent.putExtra("SortedSessionManager", manager);
         intent.putExtra("CorrectAnswer", word.getTranslationLangQuestion());
-
+        intent.putExtra("REPEATED", word.isRepeated());
         // Pass anwser result
         if (word.checkAnswer(wordInput.getText().toString()))
             intent.putExtra("PASSED", true);

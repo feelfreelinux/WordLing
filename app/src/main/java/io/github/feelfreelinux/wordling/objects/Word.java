@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import io.github.feelfreelinux.wordling.Values;
 import io.github.feelfreelinux.wordling.utils.JaroDistance;
 
-public class Word implements Serializable {
+public class Word implements Serializable, Cloneable {
     private String langTo;
     private ArrayList<String> langFrom;
     private int failedAttempts, passedAttempts;
@@ -15,10 +15,14 @@ public class Word implements Serializable {
     public Word(ArrayList<String> langFrom, String langTo, int passed, int failed) {
         this.langFrom = langFrom;
         this.langTo = langTo;
-
         this.passedAttempts = passed;
         this.failedAttempts = failed;
     }
+
+    public Word clone() {
+        return new Word(this.langFrom, this.langTo, this.passedAttempts, this.failedAttempts);
+    }
+
     public ArrayList<String> getOriginLangQuestions(){
         return this.langFrom;
     }
@@ -28,7 +32,7 @@ public class Word implements Serializable {
     }
 
     public boolean checkAnswer(String answer){
-        if(new JaroDistance().calculate(answer, this.langTo) > Values.jaroDistanceValue){
+        if(new JaroDistance().calculate(answer, this.langTo) > Values.jaroDistanceValue) {
             if(!repeated) this.passedAttempts++;
             return true;
         }
@@ -47,4 +51,6 @@ public class Word implements Serializable {
     }
 
     public void setRepeated(){ this.repeated = true; }
+
+    public boolean isRepeated(){ return this.repeated; }
 }

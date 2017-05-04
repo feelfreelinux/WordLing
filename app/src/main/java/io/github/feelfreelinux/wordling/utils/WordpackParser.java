@@ -23,21 +23,19 @@ public class WordpackParser {
                 ArrayList<Word> words = new ArrayList<>();
                 String originLang = jsonData.getString("from");
                 String translationLang = jsonData.getString("to");
-                String name = jsonData.getString("name");
+                String description = jsonData.getString("description");
                 String title = jsonData.getString("title");
-
-                Float versionNumber = Float.parseFloat(jsonData.getString("version"));
 
                 // Enumerate JSON array containing words
                 for (int i = 0; i < pack.length(); i++) {
 
                     JSONObject word = pack.getJSONObject(i);
-                    String translation = word.getJSONArray(translationLang).getString(0);
+                    String translation = word.getJSONArray("to").getString(0);
                     ArrayList<String> origin = new ArrayList<>();
-                    word.getJSONArray(originLang).length();
+                    word.getJSONArray("from").length();
 
-                    for (int x = 0; x < word.getJSONArray(originLang).length(); x++)
-                        origin.add(word.getJSONArray(originLang).getString(x));
+                    for (int x = 0; x < word.getJSONArray("from").length(); x++)
+                        origin.add(word.getJSONArray("from").getString(x));
 
                     // Bare wordpacks from web do not have these variables. Its used to storage user's progress in memory
                     int failed = 0, passed = 0;
@@ -47,9 +45,9 @@ public class WordpackParser {
                     words.add(new Word(origin, translation, passed, failed));
                 }
 
-                return new Wordpack(words, versionNumber, originLang, translationLang, name, title);
+                return new Wordpack(words, originLang, translationLang, description, title);
             } catch (JSONException e) {
-                Log.v("Wordling", "caught json exception!");
+                e.printStackTrace();
             }
         } else {
             Log.v("WordLing", "Invalid wordpack format");
@@ -60,11 +58,9 @@ public class WordpackParser {
     public boolean validateJSONWordpack(String text) {
         try {
             JSONObject jsonData = new JSONObject(text);
-            if (jsonData.has("version") &&
-                    jsonData.has("from") &&
+            if (jsonData.has("from") &&
                     jsonData.has("to") &&
                     jsonData.has("pack") &&
-                    jsonData.has("name") &&
                     jsonData.has("title")) {
                 return true;
             } else {

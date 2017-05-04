@@ -29,7 +29,7 @@ public class StorageWordpackManager {
         saveJSONtoMemory(uniqueKey, wordpack.toJSONString());
         WordpackList wordpackList = getWordpackListFromStorage();
 
-        wordpackList.addWordpackEntry(new WordpackEntry(uniqueKey, wordpack.getTitle(), ""));
+        wordpackList.addWordpackEntry(new WordpackEntry(uniqueKey, wordpack.getTitle(), wordpack.getDescription()));
         saveJSONtoMemory("wordpacks", wordpackList.toString());
         return wordpackList;
     }

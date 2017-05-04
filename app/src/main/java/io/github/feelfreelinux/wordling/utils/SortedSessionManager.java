@@ -24,10 +24,14 @@ public class SortedSessionManager implements Serializable {
         Collections.sort(this.sortedList, new Comparator<Word>() {
             @Override
             public int compare(Word o1, Word o2) {
-                // +1 works around zero divide problem.
-                float rateo1 = (o1.getPassedAttempts()+1) / (o1.getFailedAttempts()+1);
-                float rateo2 = (o2.getPassedAttempts()+1) / (o2.getFailedAttempts()+1);
-                return Math.round((rateo1 - rateo2)*1000);
+                try {
+                    // +1 works around zero divide problem.
+                    float rateo1 = (o1.getPassedAttempts() + 1) / (o1.getFailedAttempts() + 1);
+                    float rateo2 = (o2.getPassedAttempts() + 1) / (o2.getFailedAttempts() + 1);
+                    return Math.round((rateo1 - rateo2) * 1000);
+                } catch (ArithmeticException e) {
+                    return 0;
+                }
             }
         });
     }
@@ -35,6 +39,7 @@ public class SortedSessionManager implements Serializable {
     public Wordpack getWordpack() {
         return this.wordpack;
     }
+
     public int getWordCount(){
         return wordpack.pack.size();
     }
@@ -62,7 +67,8 @@ public class SortedSessionManager implements Serializable {
     }
 
     public void addWord(Word word){
-        word.setRepeated();
-        sortedList.add(word);
+        Word clonedWord = word.clone();
+        clonedWord.setRepeated();
+        sortedList.add(clonedWord);
     }
 }

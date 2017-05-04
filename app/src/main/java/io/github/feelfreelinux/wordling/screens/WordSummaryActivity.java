@@ -88,9 +88,10 @@ public class WordSummaryActivity extends PortraitActivity {
                 }
             }
         });
-
-        // Save progress
-        StorageWordpackManager strMgr = new StorageWordpackManager(this);
-        strMgr.saveJSONtoMemory(manager.getKey(), manager.getWordpack().toJSONString());
+        if(!getIntent().getBooleanExtra("REPEATED", true)) {
+            // Save progress
+            StorageWordpackManager strMgr = new StorageWordpackManager(this);
+            strMgr.saveJSONtoMemory(manager.getKey(), manager.getWordpack().toJSONString());
+        }
     }
 }
