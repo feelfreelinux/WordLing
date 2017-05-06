@@ -14,11 +14,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import io.github.feelfreelinux.wordling.R;
-import io.github.feelfreelinux.wordling.utils.PortraitActivity;
 import io.github.feelfreelinux.wordling.utils.SortedSessionManager;
 import io.github.feelfreelinux.wordling.utils.StorageWordpackManager;
+import io.github.feelfreelinux.wordling.utils.WordlingActivity;
 
-public class WordSummaryActivity extends PortraitActivity {
+public class WordSummaryActivity extends WordlingActivity {
     ImageView iconView;
     SortedSessionManager manager;
     ProgressBar progressBar;
@@ -31,6 +31,7 @@ public class WordSummaryActivity extends PortraitActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_results);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
         // Get session manager
         manager = (SortedSessionManager) getIntent().getSerializableExtra("SortedSessionManager");
 

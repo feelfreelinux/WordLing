@@ -16,6 +16,7 @@ import io.github.feelfreelinux.wordling.screens.WordpacksListActivity;
 
 public class ImportWordpackDialog extends DialogFragment {
     EditText urlEdit;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Construct custom dialog with editText

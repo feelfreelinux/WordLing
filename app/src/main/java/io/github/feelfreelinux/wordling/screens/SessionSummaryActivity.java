@@ -5,10 +5,10 @@ import android.util.Log;
 import android.widget.TextView;
 
 import io.github.feelfreelinux.wordling.R;
-import io.github.feelfreelinux.wordling.utils.PortraitActivity;
 import io.github.feelfreelinux.wordling.utils.SortedSessionManager;
+import io.github.feelfreelinux.wordling.utils.WordlingActivity;
 
-public class SessionSummaryActivity extends PortraitActivity {
+public class SessionSummaryActivity extends WordlingActivity {
     SortedSessionManager manager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

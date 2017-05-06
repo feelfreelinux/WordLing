@@ -11,4 +11,6 @@
     <string name="correctAnswer">Correct answer</string>
     <string name="incorrectAnswer">Incorrect Answer</string>
     <string name="result">Result</string>
+    <string name="deleteWordpack">Delete</string>
+    <string name="edit">Edit</string>
 </resources>

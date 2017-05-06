@@ -1,7 +1,5 @@
 package io.github.feelfreelinux.wordling.objects;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,7 +24,6 @@ public class WordpackList {
     public String toString() {
         JSONArray jsonList = new JSONArray();
         try {
-            Log.v("asd", Integer.toString(wordpacks.size()));
             for (WordpackEntry wordpackEntry : this.wordpacks ) {
                 JSONObject jsonEntry = new JSONObject();
 
@@ -40,5 +37,9 @@ public class WordpackList {
             e.printStackTrace();
         }
         return jsonList.toString();
+    }
+
+    public void removeWordEntry(WordpackEntry entry) {
+        wordpacks.remove(entry);
     }
 }

@@ -16,10 +16,10 @@ import android.widget.TextView;
 
 import io.github.feelfreelinux.wordling.R;
 import io.github.feelfreelinux.wordling.objects.Word;
-import io.github.feelfreelinux.wordling.utils.PortraitActivity;
 import io.github.feelfreelinux.wordling.utils.SortedSessionManager;
+import io.github.feelfreelinux.wordling.utils.WordlingActivity;
 
-public class WordInputActivity extends PortraitActivity {
+public class WordInputActivity extends WordlingActivity {
     SortedSessionManager manager;
     Word word;
     TextView wordView;

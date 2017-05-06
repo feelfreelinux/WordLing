@@ -12,4 +12,6 @@
     <string name="correctAnswer">Prawidłowa odpowiedź</string>
     <string name="incorrectAnswer">Błędna odpowiedź</string>
     <string name="result">Wynik</string>
+    <string name="deleteWordpack">Usuń</string>
+    <string name="edit">Edytuj</string>
 </resources>
