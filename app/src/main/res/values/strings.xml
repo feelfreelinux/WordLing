@@ -13,4 +13,8 @@
     <string name="result">Result</string>
     <string name="deleteWordpack">Delete</string>
     <string name="edit">Edit</string>
+    <string name="word">Word</string>
+    <string name="translation">Translation</string>
+    <string name="passedAttempts">Correct anwsers</string>
+    <string name="failedAttempts">Incorrect attempts</string>
 </resources>

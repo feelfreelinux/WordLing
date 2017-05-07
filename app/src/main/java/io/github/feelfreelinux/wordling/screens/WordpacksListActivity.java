@@ -155,7 +155,7 @@ public class WordpacksListActivity extends WordlingActivity {
         // Retreive wordpack list from storage, list it in listView
         adapter = null;
         wordpacks = strMgr.getWordpackListFromStorage();
-        adapter = new WordpackListAdapter(this, getFragmentManager(), wordpacks);
+        adapter = new WordpackListAdapter(this, wordpacks);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }

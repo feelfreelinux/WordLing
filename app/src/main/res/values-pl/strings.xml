@@ -14,4 +14,8 @@
     <string name="result">Wynik</string>
     <string name="deleteWordpack">Usuń</string>
     <string name="edit">Edytuj</string>
+    <string name="word">Słówko</string>
+    <string name="translation">Tłumaczenie</string>
+    <string name="passedAttempts">Poprawne odpowiedzi</string>
+    <string name="failedAttempts">Błedne odpowiedzi</string>
 </resources>

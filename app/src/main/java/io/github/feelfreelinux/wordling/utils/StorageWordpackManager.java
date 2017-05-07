@@ -39,9 +39,12 @@ public class StorageWordpackManager {
         storage.edit().remove(uniqueKey).apply();
         WordpackList wordpackList = getWordpackListFromStorage();
         // Drop entry from wordpack list
+        int indexToRemove;
         for (WordpackEntry entry : wordpackList.getWordpackEntries())
-            if (entry.key.compareTo(uniqueKey) == 0) wordpackList.getWordpackEntries().remove(entry);
-
+            if (entry.key.compareTo(uniqueKey) == 0) {
+                wordpackList.getWordpackEntries().remove(entry);
+                break;
+            }
         saveJSONtoMemory("wordpacks", wordpackList.toString());
     }
     public WordpackList getWordpackListFromStorage() {
