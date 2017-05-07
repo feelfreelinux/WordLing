@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.speech.tts.TextToSpeech;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import io.github.feelfreelinux.wordling.R;
+import io.github.feelfreelinux.wordling.WordLing;
 import io.github.feelfreelinux.wordling.utils.SortedSessionManager;
 import io.github.feelfreelinux.wordling.utils.StorageWordpackManager;
 import io.github.feelfreelinux.wordling.utils.WordlingActivity;
@@ -25,7 +27,11 @@ public class WordSummaryActivity extends WordlingActivity {
     Button nextButton;
     TextView result, messageBox;
     Vibrator vibrator;
+    TextToSpeech tts;
+    String answer;
     boolean passed;
+
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +76,13 @@ public class WordSummaryActivity extends WordlingActivity {
         }
         iconView.setImageDrawable(icon);
 
-        // Set correct result text
+        // Get answer, set correct result text
+        answer = getIntent().getStringExtra("CorrectAnswer");
         result = (TextView) findViewById(R.id.wordView);
-        result.setText(getIntent().getStringExtra("CorrectAnswer"));
+        result.setText(answer);
+
+        // Say answer using TextToSpeech
+        ((WordLing) getApplication()).say(answer);
 
         nextButton = (Button) findViewById(R.id.nextButton);
         nextButton.setOnClickListener(new View.OnClickListener() {

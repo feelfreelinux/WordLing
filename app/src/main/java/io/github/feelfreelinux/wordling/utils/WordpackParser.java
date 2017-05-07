@@ -62,16 +62,15 @@ public class WordpackParser {
                     jsonData.has("to") &&
                     jsonData.has("pack") &&
                     jsonData.has("title")) {
-                return true;
-            } else {
+                if (jsonData.getJSONArray("pack").length()>0) return true;
+            } else
                 Log.v("WordLing", "Invalid wordpack format");
-                return false;
-            }
+
 
         } catch (JSONException e) {
             Log.v("WordLing", "Error occured when parsing wordpack");
-            return false;
         }
+        return false;
     }
 
     // Parse text string into wordpack list

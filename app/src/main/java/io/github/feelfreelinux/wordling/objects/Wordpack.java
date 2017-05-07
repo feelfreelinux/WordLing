@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Wordpack implements Serializable, Cloneable {
+public class Wordpack implements Serializable {
     public ArrayList<Word> pack;
     private String originLang, translationLang, description, title;
 
@@ -19,8 +19,8 @@ public class Wordpack implements Serializable, Cloneable {
         this.title = title;
     }
 
-    public Wordpack clone() {
-        return new Wordpack(this.pack, this.originLang, this.translationLang, this.description, this.title);
+    public String getTranslationLang() {
+        return translationLang;
     }
 
     // Convert wordpack to json string

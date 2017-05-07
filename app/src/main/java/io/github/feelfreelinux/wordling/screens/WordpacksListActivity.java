@@ -3,6 +3,7 @@ package io.github.feelfreelinux.wordling.screens;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
@@ -11,8 +12,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import io.github.feelfreelinux.wordling.R;
+import io.github.feelfreelinux.wordling.WordLing;
 import io.github.feelfreelinux.wordling.dialogs.ImportWordpackDialog;
 import io.github.feelfreelinux.wordling.dialogs.WordListMenuDialog;
 import io.github.feelfreelinux.wordling.objects.Wordpack;
@@ -39,6 +42,10 @@ public class WordpacksListActivity extends WordlingActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wordpack_list);
+
+        // Init TTS service. Language will be changed later, to wordpack's language
+        ((WordLing) getApplication()).initTTS(Locale.ENGLISH);
+
         // Set title
         setTitle(getResources().getString(R.string.wordpacksListTitle));
         listView = (ListView) findViewById(R.id.wordpacks_list);
@@ -68,14 +75,26 @@ public class WordpacksListActivity extends WordlingActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 WordpackEntry entry = (WordpackEntry) adapter.getItem(position);
-                // Create load wordpack data from memory, create session manager
-                SortedSessionManager sm = new SortedSessionManager(
-                        new StorageWordpackManager(getApplicationContext())
-                                .getWordpackFromStorage(entry.key), entry.key);
-                // Start new session
-                Intent inputScreen = new Intent(getApplicationContext(), WordInputActivity.class);
-                inputScreen.putExtra("SortedSessionManager", sm);
-                getApplicationContext().startActivity(inputScreen);
+                if (!(entry.key == null)) {
+                    // Get wordpack from entry
+                    Wordpack wordpack = new StorageWordpackManager(getApplicationContext()).getWordpackFromStorage(entry.key);
+
+                    // Get Locale from wordpack BCP-47 code (In api 21)
+                    Locale locale;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                        locale = Locale.forLanguageTag(wordpack.getTranslationLang());
+                    else locale = new Locale(wordpack.getTranslationLang());
+
+                    // Init TTS service
+                    ((WordLing) getApplication()).initTTS(locale);
+
+                    // Create load wordpack data from memory, create session manager
+                    SortedSessionManager sm = new SortedSessionManager(wordpack, entry.key);
+                    // Start new session
+                    Intent inputScreen = new Intent(getApplicationContext(), WordInputActivity.class);
+                    inputScreen.putExtra("SortedSessionManager", sm);
+                    getApplicationContext().startActivity(inputScreen);
+                }
             }
         });
 
