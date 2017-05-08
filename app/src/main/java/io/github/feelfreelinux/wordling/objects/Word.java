@@ -10,7 +10,7 @@ public class Word implements Serializable, Cloneable {
     private String langTo;
     private ArrayList<String> langFrom;
     private int failedAttempts, passedAttempts;
-    private boolean repeated = false;
+    private boolean repeated = false, skipped = false;
 
     public Word(ArrayList<String> langFrom, String langTo, int passed, int failed) {
         this.langFrom = langFrom;
@@ -33,11 +33,11 @@ public class Word implements Serializable, Cloneable {
 
     public boolean checkAnswer(String answer){
         if(new JaroDistance().calculate(answer.toLowerCase(), this.langTo.toLowerCase()) > Values.jaroDistanceValue) {
-            if(!repeated) this.passedAttempts++;
+            if(!repeated && !skipped) this.passedAttempts++;
             return true;
         }
         else {
-            if (!repeated)
+            if (!repeated && !skipped)
             this.failedAttempts++;
             return false;
         }
@@ -51,6 +51,8 @@ public class Word implements Serializable, Cloneable {
     }
 
     public void setRepeated(){ this.repeated = true; }
+
+    public void setSkipped(){ this.skipped = true; }
 
     public boolean isRepeated(){ return this.repeated; }
 }

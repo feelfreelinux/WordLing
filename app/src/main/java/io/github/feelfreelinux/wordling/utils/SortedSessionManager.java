@@ -1,23 +1,34 @@
 package io.github.feelfreelinux.wordling.utils;
 
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Random;
 
+import io.github.feelfreelinux.wordling.WordLing;
 import io.github.feelfreelinux.wordling.objects.Word;
 import io.github.feelfreelinux.wordling.objects.Wordpack;
+import io.github.feelfreelinux.wordling.screens.SessionSummaryActivity;
+import io.github.feelfreelinux.wordling.screens.WordInputActivity;
+import io.github.feelfreelinux.wordling.screens.WordTTSInputActivity;
 
 public class SortedSessionManager implements Serializable {
     private Wordpack wordpack;
     private int iterator = 0;
     private int passed = 0;
     private String key;
+    private Random generator;
     private int wordCount;
 
-    public SortedSessionManager(Wordpack wordpack, String key) {
+    public SortedSessionManager( Wordpack wordpack, String key) {
         this.wordpack = wordpack;
         this.wordCount = wordpack.pack.size();
         this.key = key;
+        generator = new Random();
 
         // Sort word pack, by the correct anwsers rate
         Collections.sort(this.wordpack.pack, new Comparator<Word>() {
@@ -59,15 +70,33 @@ public class SortedSessionManager implements Serializable {
 
     public Word getNextWord() {
         if (getTotalWordCount() != getProgressCount()) {
-            Word word = this.wordpack.pack.get(iterator);
+            Word word = wordpack.pack.get(iterator);
             iterator++;
+            Log.v("here wee go!", "asd!");
             return word;
         } else return null;
     }
 
-    public void addWord(Word word){
+    public void addWord(Word word, boolean skipped){
         Word clonedWord = word.clone();
         clonedWord.setRepeated();
-        this.wordpack.pack.add(clonedWord);
+        // Add skipped flag if nessesary
+        if(skipped) clonedWord.setSkipped();
+        wordpack.pack.add(clonedWord);
+    }
+
+    public void procced(Context context, WordLing app) {
+        Intent intent;
+
+        // Start another input activity
+        if (getProgressCount() != getTotalWordCount())
+            if (app.ttsReady() && (generator.nextFloat() <= 0.25f) && !wordpack.pack.get(iterator).isRepeated())
+                intent = new Intent(context, WordTTSInputActivity.class);
+            else intent = new Intent(context, WordInputActivity.class);
+        else // Show session summary
+            intent = new Intent(context, SessionSummaryActivity.class);
+
+        intent.putExtra("SortedSessionManager", this);
+        context.startActivity(intent);
     }
 }

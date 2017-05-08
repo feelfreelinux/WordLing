@@ -5,10 +5,8 @@ import android.text.TextUtils;
 import android.widget.TextView;
 
 import io.github.feelfreelinux.wordling.R;
-import io.github.feelfreelinux.wordling.objects.Word;
 
 public class WordInputActivity extends InputActivity {
-    Word word;
     TextView wordView;
 
     @Override

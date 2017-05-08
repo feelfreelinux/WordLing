@@ -1,7 +1,6 @@
 package io.github.feelfreelinux.wordling.screens;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -31,7 +30,6 @@ public class WordSummaryActivity extends WordlingActivity {
     String answer;
     boolean passed;
 
-    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,30 +82,21 @@ public class WordSummaryActivity extends WordlingActivity {
         // Say answer using TextToSpeech
         ((WordLing) getApplication()).say(answer);
 
-        nextButton = (Button) findViewById(R.id.nextButton);
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Check are there any words
-                if (manager.getProgressCount() != manager.getTotalWordCount()) {
-                    // Start another input activity
-                    Intent inputScreen = new Intent(getApplicationContext(), WordInputActivity.class);
-                    inputScreen.putExtra("SortedSessionManager", manager);
-                    startActivity(inputScreen);
-                    finish();
-                } else {
-                    // Show session summary
-                    Intent sessionSummary = new Intent(getApplicationContext(), SessionSummaryActivity.class);
-                    sessionSummary.putExtra("SortedSessionManager", manager);
-                    startActivity(sessionSummary);
-                    finish();
-                }
-            }
-        });
         if(!getIntent().getBooleanExtra("REPEATED", true)) {
             // Save progress
             StorageWordpackManager strMgr = new StorageWordpackManager(this);
             strMgr.saveJSONtoMemory(manager.getKey(), manager.getWordpack().toJSONString());
         }
+
+        nextButton = (Button) findViewById(R.id.nextButton);
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Let manager handle it
+                manager.procced(getApplicationContext(), ((WordLing) getApplication()));
+                // Bye
+                finish();
+            }
+        });
     }
 }

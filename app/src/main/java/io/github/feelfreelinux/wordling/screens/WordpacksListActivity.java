@@ -43,9 +43,6 @@ public class WordpacksListActivity extends WordlingActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wordpack_list);
 
-        // Init TTS service. Language will be changed later, to wordpack's language
-        ((WordLing) getApplication()).initTTS(Locale.GERMAN);
-
         // Set title
         setTitle(getResources().getString(R.string.wordpacksListTitle));
         listView = (ListView) findViewById(R.id.wordpacks_list);
@@ -158,5 +155,11 @@ public class WordpacksListActivity extends WordlingActivity {
         adapter = new WordpackListAdapter(this, wordpacks);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onDestroy() {
+        ((WordLing) getApplication()).shutdown();
+        super.onDestroy();
     }
 }

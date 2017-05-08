@@ -18,4 +18,6 @@
     <string name="translation">Tłumaczenie</string>
     <string name="passedAttempts">Poprawne odpowiedzi</string>
     <string name="failedAttempts">Błedne odpowiedzi</string>
+    <string name="tts_activity_message">Wpisz dokładnie to co słyszysz</string>
+    <string name="skip">Pomiń</string>
 </resources>

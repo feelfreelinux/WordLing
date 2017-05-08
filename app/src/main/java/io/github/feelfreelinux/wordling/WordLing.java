@@ -20,7 +20,6 @@ public class WordLing extends Application {
         if (ttsInit) {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                 tts.speak(word, TextToSpeech.QUEUE_FLUSH, null, null);
-
             else //noinspection deprecation
                 tts.speak(word, TextToSpeech.QUEUE_FLUSH, null);
         }
@@ -38,8 +37,22 @@ public class WordLing extends Application {
                     // Make it say it slowly
                     tts.setSpeechRate(0.75f);
                     ttsInit = true;
-                }
+                } else ttsInit = false;
             }
         });
+    }
+
+    public boolean ttsReady(){
+        return ttsInit;
+    }
+
+    public boolean isSpeaking(){
+        return tts.isSpeaking();
+    }
+    public void shutdown() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
     }
 }

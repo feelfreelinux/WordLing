@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import io.github.feelfreelinux.wordling.R;
+import io.github.feelfreelinux.wordling.WordLing;
 import io.github.feelfreelinux.wordling.objects.Word;
 import io.github.feelfreelinux.wordling.utils.SortedSessionManager;
 import io.github.feelfreelinux.wordling.utils.WordlingActivity;
@@ -57,7 +58,7 @@ public class InputActivity extends WordlingActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    checkInput(wordInput.getText().toString());
+                    checkInput(wordInput.getText().toString(), false);
                     return true;
                 }
                 return false;
@@ -68,7 +69,7 @@ public class InputActivity extends WordlingActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkInput(wordInput.getText().toString());
+                checkInput(wordInput.getText().toString(), false);
             }
         });
 
@@ -78,24 +79,28 @@ public class InputActivity extends WordlingActivity {
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
-    public void checkInput(String anwser) {
-        // Open intent
-        Intent intent = new Intent(this, WordSummaryActivity.class);
-        intent.putExtra("SortedSessionManager", manager);
-        intent.putExtra("CorrectAnswer", word.getTranslationLangQuestion());
-        intent.putExtra("REPEATED", word.isRepeated());
-        // Pass anwser result
-        if (word.checkAnswer(anwser))
-            intent.putExtra("PASSED", true);
-        else {
-            intent.putExtra("PASSED", false);
-            manager.addWord(word);
-        }
-        // Start new activity.
-        startActivity(intent);
-        finish();
+    public void checkInput(String anwser, boolean skipped) {
+        // Only show summary if we do not skip it
+        if (!skipped) {
+            // Open intent
+            Intent intent = new Intent(this, WordSummaryActivity.class);
+            intent.putExtra("CorrectAnswer", word.getTranslationLangQuestion());
+            intent.putExtra("SortedSessionManager", manager);
+            intent.putExtra("REPEATED", word.isRepeated());
+            // Pass anwser result
+            if (word.checkAnswer(anwser))
+                intent.putExtra("PASSED", true);
+            else {
+                intent.putExtra("PASSED", false);
+                manager.addWord(word, skipped);
+            }
+            // Start new activity.
+            startActivity(intent);
+        } else manager.procced(this, ((WordLing) getApplication()));
+
         // Close keyboard
         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        finish();
     }
 
 }
