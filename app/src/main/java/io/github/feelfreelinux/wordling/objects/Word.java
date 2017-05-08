@@ -32,7 +32,7 @@ public class Word implements Serializable, Cloneable {
     }
 
     public boolean checkAnswer(String answer){
-        if(new JaroDistance().calculate(answer, this.langTo) > Values.jaroDistanceValue) {
+        if(new JaroDistance().calculate(answer.toLowerCase(), this.langTo.toLowerCase()) > Values.jaroDistanceValue) {
             if(!repeated) this.passedAttempts++;
             return true;
         }

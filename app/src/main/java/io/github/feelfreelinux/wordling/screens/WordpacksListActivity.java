@@ -44,7 +44,7 @@ public class WordpacksListActivity extends WordlingActivity {
         setContentView(R.layout.activity_wordpack_list);
 
         // Init TTS service. Language will be changed later, to wordpack's language
-        ((WordLing) getApplication()).initTTS(Locale.ENGLISH);
+        ((WordLing) getApplication()).initTTS(Locale.GERMAN);
 
         // Set title
         setTitle(getResources().getString(R.string.wordpacksListTitle));

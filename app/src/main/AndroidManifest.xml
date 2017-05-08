@@ -15,10 +15,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-
         <activity android:name=".screens.WordInputActivity" android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity android:name=".screens.SessionSummaryActivity"/>
         <activity android:name=".screens.WordSummaryActivity"/>
+        <activity android:name=".screens.WordTTSInputActivity" android:windowSoftInputMode="stateVisible|adjustResize"/>
         <activity android:name=".screens.WordpacksListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
