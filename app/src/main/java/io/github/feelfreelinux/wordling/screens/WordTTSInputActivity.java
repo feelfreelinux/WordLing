@@ -23,6 +23,8 @@ public class WordTTSInputActivity extends InputActivity {
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Add it to end of list
+                manager.addWord(word, true);
                 checkInput("", true);
             }
         });

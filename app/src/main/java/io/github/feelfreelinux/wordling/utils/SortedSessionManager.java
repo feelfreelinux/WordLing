@@ -2,7 +2,6 @@ package io.github.feelfreelinux.wordling.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -23,6 +22,7 @@ public class SortedSessionManager implements Serializable {
     private String key;
     private Random generator;
     private int wordCount;
+    private boolean skipListenings = false;
 
     public SortedSessionManager( Wordpack wordpack, String key) {
         this.wordpack = wordpack;
@@ -72,7 +72,6 @@ public class SortedSessionManager implements Serializable {
         if (getTotalWordCount() != getProgressCount()) {
             Word word = wordpack.pack.get(iterator);
             iterator++;
-            Log.v("here wee go!", "asd!");
             return word;
         } else return null;
     }
@@ -80,7 +79,9 @@ public class SortedSessionManager implements Serializable {
     public void addWord(Word word, boolean skipped){
         Word clonedWord = word.clone();
         clonedWord.setRepeated();
+
         // Add skipped flag if nessesary
+        if (skipped) skipListenings = skipped;
         if(skipped) clonedWord.setSkipped();
         wordpack.pack.add(clonedWord);
     }
@@ -90,7 +91,7 @@ public class SortedSessionManager implements Serializable {
 
         // Start another input activity
         if (getProgressCount() != getTotalWordCount())
-            if (app.ttsReady() && (generator.nextFloat() <= 0.25f) && !wordpack.pack.get(iterator).isRepeated())
+            if (app.ttsReady() && (generator.nextFloat() <= 0.25f) && !wordpack.pack.get(iterator).isRepeated() && !skipListenings)
                 intent = new Intent(context, WordTTSInputActivity.class);
             else intent = new Intent(context, WordInputActivity.class);
         else // Show session summary
