@@ -16,19 +16,19 @@ import java.util.Locale;
 
 import io.github.feelfreelinux.wordling.R;
 import io.github.feelfreelinux.wordling.WordLing;
-import io.github.feelfreelinux.wordling.dialogs.ImportWordpackDialog;
+import io.github.feelfreelinux.wordling.adapters.WordpackListAdapter;
+import io.github.feelfreelinux.wordling.dialogs.EditTextDialog;
 import io.github.feelfreelinux.wordling.dialogs.WordListMenuDialog;
 import io.github.feelfreelinux.wordling.objects.Wordpack;
 import io.github.feelfreelinux.wordling.objects.WordpackEntry;
 import io.github.feelfreelinux.wordling.objects.WordpackList;
-import io.github.feelfreelinux.wordling.objects.WordpackListAdapter;
+import io.github.feelfreelinux.wordling.utils.EditTextDialogActivity;
 import io.github.feelfreelinux.wordling.utils.SortedSessionManager;
 import io.github.feelfreelinux.wordling.utils.StorageWordpackManager;
 import io.github.feelfreelinux.wordling.utils.WebWordpackDownloader;
-import io.github.feelfreelinux.wordling.utils.WordlingActivity;
 import io.github.feelfreelinux.wordling.utils.WordpackParser;
 
-public class WordpacksListActivity extends WordlingActivity {
+public class WordpacksListActivity extends EditTextDialogActivity {
     private ListView listView;
     private StorageWordpackManager strMgr;
 
@@ -43,6 +43,8 @@ public class WordpacksListActivity extends WordlingActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wordpack_list);
 
+        Intent intent = new Intent(this, WordpackEditorActivity.class);
+        startActivity(intent);
         // Set title
         setTitle(getResources().getString(R.string.wordpacksListTitle));
         listView = (ListView) findViewById(R.id.wordpacks_list);
@@ -51,7 +53,13 @@ public class WordpacksListActivity extends WordlingActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ImportWordpackDialog().show(getFragmentManager(), "dialog");
+                Bundle args = new Bundle();
+                args.putString("title", getResources().getString(R.string.wordpackImportTitle));
+                args.putString("buttonLabel", getResources().getString(R.string.wordpackImportButton));
+                args.putString("hint", getResources().getString(R.string.urlAddress));
+                EditTextDialog dialog = new EditTextDialog();
+                dialog.setArguments(args);
+                dialog.show(getFragmentManager(), "dialog");
             }
         });
 
@@ -112,7 +120,8 @@ public class WordpacksListActivity extends WordlingActivity {
 
     }
 
-    public void importWordpackFromUrl(String url) {
+    @Override
+    public void editTextAction(String url) {
         // Fill missing url data
         if(!url.startsWith("http://") && !url.startsWith("https://") ){
             url = "http://" + url;

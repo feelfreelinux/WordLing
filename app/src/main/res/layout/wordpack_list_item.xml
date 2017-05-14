@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/entryTitle"
-        android:textSize="25sp"
+        android:textSize="25dp"
         android:textStyle="italic"
         />
 

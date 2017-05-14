@@ -90,13 +90,18 @@ public class InputActivity extends WordlingActivity {
             // Pass anwser result
             if (word.checkAnswer(anwser))
                 intent.putExtra("PASSED", true);
+                if(!word.isRepeated() || word.isSkipped()) manager.passed();
             else {
                 intent.putExtra("PASSED", false);
-                manager.addWord(word, skipped);
+                manager.addWord(word, false);
             }
             // Start new activity.
             startActivity(intent);
-        } else manager.procced(this, ((WordLing) getApplication()));
+        } else {
+            // Add this word to the end of list
+            manager.addWord(word, true);
+            manager.procced(this, ((WordLing) getApplication()));
+        }
 
         // Close keyboard
         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);

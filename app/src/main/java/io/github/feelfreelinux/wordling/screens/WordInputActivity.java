@@ -21,5 +21,4 @@ public class WordInputActivity extends InputActivity {
                 TextUtils.join(", ", getWord().getOriginLangQuestions())
         );
     }
-
 }

@@ -1,4 +1,4 @@
-package io.github.feelfreelinux.wordling.objects;
+package io.github.feelfreelinux.wordling.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import io.github.feelfreelinux.wordling.R;
+import io.github.feelfreelinux.wordling.objects.Word;
 
 public class SummaryListAdapter extends ArrayAdapter {
     public SummaryListAdapter(Context context, List<Word> wordList) {

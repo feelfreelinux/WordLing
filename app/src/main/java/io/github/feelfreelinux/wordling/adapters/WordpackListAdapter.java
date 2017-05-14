@@ -1,4 +1,4 @@
-package io.github.feelfreelinux.wordling.objects;
+package io.github.feelfreelinux.wordling.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import io.github.feelfreelinux.wordling.R;
+import io.github.feelfreelinux.wordling.objects.WordpackEntry;
+import io.github.feelfreelinux.wordling.objects.WordpackList;
 
 public class WordpackListAdapter extends ArrayAdapter {
     public WordpackListAdapter(Context context, WordpackList repository) {

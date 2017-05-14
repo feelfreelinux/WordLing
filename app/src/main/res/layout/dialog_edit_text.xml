@@ -5,10 +5,9 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/url"
+        android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textUri"
-        android:hint="@string/urlAddress"/>
+        android:inputType="text" />
 
 </LinearLayout>

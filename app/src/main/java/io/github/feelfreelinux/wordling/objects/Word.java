@@ -55,4 +55,7 @@ public class Word implements Serializable, Cloneable {
     public void setSkipped(){ this.skipped = true; }
 
     public boolean isRepeated(){ return this.repeated; }
+
+    public boolean isSkipped(){ return this.skipped; }
+
 }

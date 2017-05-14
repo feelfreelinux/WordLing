@@ -63,9 +63,6 @@ public class WordSummaryActivity extends WordlingActivity {
         if (passed) {
             icon = ContextCompat.getDrawable(this, R.drawable.icon_correct);
             messageBox.setText(res.getString(R.string.correctAnswer));
-            // Only count word pas passed if word is not "repeated"
-            if(!getIntent().getBooleanExtra("REPEATED", true)) manager.passed();
-
         }
         else {
             vibrator.vibrate(250);

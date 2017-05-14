@@ -76,13 +76,15 @@ public class SortedSessionManager implements Serializable {
         } else return null;
     }
 
-    public void addWord(Word word, boolean skipped){
+    public void addWord(Word word, boolean skipped) {
         Word clonedWord = word.clone();
         clonedWord.setRepeated();
 
         // Add skipped flag if nessesary
-        if (skipped) skipListenings = skipped;
-        if(skipped) clonedWord.setSkipped();
+        if (skipped) {
+            skipListenings = skipped;
+            clonedWord.setSkipped();
+        }
         wordpack.pack.add(clonedWord);
     }
 
