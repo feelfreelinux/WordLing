@@ -24,7 +24,7 @@
         android:layout_width="200dp"/>
     <TextView
         android:id="@+id/wordView"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:textStyle="bold"
         android:gravity="center"
         android:layout_below="@id/icon"

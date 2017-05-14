@@ -23,9 +23,10 @@ public class EditTextDialog extends DialogFragment {
 
         // Get string data
         String title = getArguments().getString("title");
-        String message = getArguments().getString("message");
-        String buttonLabel = getArguments().getString("buttonLabel");
-        String editTextHint = getArguments().getString("hint");;
+        String message = getArguments().getString("message"),
+                pretypedText = getArguments().getString("pretyped"),
+                buttonLabel = getArguments().getString("buttonLabel"),
+                editTextHint = getArguments().getString("hint");;
         Resources res = getResources();
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
@@ -34,14 +35,16 @@ public class EditTextDialog extends DialogFragment {
         builder.setView(view);
         editText = (EditText) view.findViewById(R.id.editText);
         editText.setHint(editTextHint);
+        if (!(pretypedText == null)) editText.setText(pretypedText);
         builder.setTitle(title);
         if (!(message == null)) builder.setMessage(message);
         builder.setPositiveButton(buttonLabel,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        if (!editText.getText().toString().isEmpty())
                         // Call callback
-                        ((EditTextDialogActivity) getActivity()).editTextAction(editText.getText().toString());
+                        ((EditTextDialogActivity) getActivity()).editTextAction(editText.getText().toString(), getArguments());
                     }
                 });
         return builder.create();

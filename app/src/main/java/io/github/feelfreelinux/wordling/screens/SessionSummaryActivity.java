@@ -1,6 +1,7 @@
 package io.github.feelfreelinux.wordling.screens;
 
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,7 +32,7 @@ public class SessionSummaryActivity extends WordlingActivity {
         // Set title - name of wordpack
         setTitle(manager.getWordpack().getTitle());
 
-        RelativeLayout header = (RelativeLayout) getLayoutInflater().inflate(R.layout.activity_session_summary_header, null, false);
+        LinearLayout header = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_session_summary_header, null, false);
         ((TextView) header.findViewById(R.id.result)).setText(getResources().getString(R.string.result));
 
         TextView tv = (TextView) header.findViewById(R.id.percentText);

@@ -19,6 +19,10 @@ public class Word implements Serializable, Cloneable {
         this.failedAttempts = failed;
     }
 
+    public void editData (ArrayList<String> langFrom, String langTo) {
+        this.langFrom = langFrom;
+        this.langTo = langTo;
+    }
     public Word clone() {
         return new Word(this.langFrom, this.langTo, this.passedAttempts, this.failedAttempts);
     }

@@ -16,6 +16,7 @@ import java.util.Locale;
 
 import io.github.feelfreelinux.wordling.R;
 import io.github.feelfreelinux.wordling.WordLing;
+import io.github.feelfreelinux.wordling.adapters.WordpackEditorAdapter;
 import io.github.feelfreelinux.wordling.adapters.WordpackListAdapter;
 import io.github.feelfreelinux.wordling.dialogs.EditTextDialog;
 import io.github.feelfreelinux.wordling.dialogs.WordListMenuDialog;
@@ -121,7 +122,7 @@ public class WordpacksListActivity extends EditTextDialogActivity {
     }
 
     @Override
-    public void editTextAction(String url) {
+    public void editTextAction(String url, Bundle args) {
         // Fill missing url data
         if(!url.startsWith("http://") && !url.startsWith("https://") ){
             url = "http://" + url;

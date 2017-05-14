@@ -19,4 +19,20 @@
     <string name="failedAttempts">Incorrect attempts</string>
     <string name="tts_activity_message">Write exactly what you hear</string>
     <string name="skip">Skip</string>
+    <string name="done">DONE</string>
+    <string name="edit_wordpack">Edit word pack</string>
+    <string name="title">Title</string>
+    <string name="wordpack_description">Wordpack description</string>
+    <string name="definition">Definition</string>
+    <string name="select_language">Select language</string>
+    <string name="term">Term</string>
+    <string name="term_in">Term in</string>
+    <string name="definition_in">Definition in</string>
+    <string name="add_definition">Add definition</string>
+    <string name="add">Add</string>
+    <string name="edit_definition">Edit definition</string>
+    <string name="definitions">Definitions</string>
+    <string name="field_empty">This field cannot be blank.</string>
+    <string name="definition_error">You need to add at least one definition</string>
+    <string name="save_changes">Save changes?</string>
 </resources>
