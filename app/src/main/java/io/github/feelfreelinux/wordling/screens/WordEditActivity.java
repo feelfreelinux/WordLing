@@ -53,7 +53,7 @@ public class WordEditActivity extends EditTextDialogActivity {
         // Fill out data if intent contains data
         word = (Word) getIntent().getSerializableExtra("word");
         if (!(word == null)) {
-            wordList = word.getOriginLangQuestions();
+            wordList = (ArrayList<String>) word.getOriginLangQuestions().clone();
             editText.setText(word.getTranslationLangQuestion());
         }
         // Set header view to list
@@ -64,8 +64,6 @@ public class WordEditActivity extends EditTextDialogActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.v("asd", (String) parent.getItemAtPosition(position));
-                Log.v("asd", "das");
 
                 // Open dialog editing this value
                 openDefinitionDialog((String) parent.getItemAtPosition(position), position);
@@ -88,14 +86,14 @@ public class WordEditActivity extends EditTextDialogActivity {
     public void editTextAction(String text, Bundle args) {
         if(args.containsKey("position")) {
             wordList.set(args.getInt("position")-1, text);
-            Log.v("asd", Integer.toString(args.getInt("position")));
         }
         else wordList.add(text);
         adapter.notifyDataSetChanged();
     }
     public void showAskAlert() {
         // Show ask dialog if data was changed
-        if ((!(word == null)) && word.getOriginLangQuestions().equals(wordList)
+        if ( !(word == null)
+                && wordList.equals(word.getOriginLangQuestions())
                 && editText.getText().toString().equals(word.getTranslationLangQuestion())) {
             // Just exit
             setResult(Values.WordEditActivityBlank);

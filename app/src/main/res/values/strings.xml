@@ -35,4 +35,5 @@
     <string name="field_empty">This field cannot be blank.</string>
     <string name="definition_error">You need to add at least one definition</string>
     <string name="save_changes">Save changes?</string>
+    <string name="select_language_toast">Select language first</string>
 </resources>

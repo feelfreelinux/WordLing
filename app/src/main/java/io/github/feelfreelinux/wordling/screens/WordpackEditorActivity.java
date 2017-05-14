@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class WordpackEditorActivity extends WordlingActivity {
     private List<Word> wordList;
     private Pair<String, String> termLang, definitionLang;
     private WordpackEditorAdapter adapter;
-    int result = 100;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,14 +96,22 @@ public class WordpackEditorActivity extends WordlingActivity {
     }
 
     public void openWordEditor(@Nullable Word word, int position) {
-        Intent intent = new Intent(getApplicationContext(), WordEditActivity.class);
-        intent.putExtra("termLanguage", termLang.second);
-        intent.putExtra("definitionLanguage", definitionLang.second);
-        if (!(word == null)) {
-            intent.putExtra("word", word);
-            intent.putExtra("position", position);
+        if (!(termLang == null) && !(definitionLang == null)) {
+            Intent intent = new Intent(getApplicationContext(), WordEditActivity.class);
+            intent.putExtra("termLanguage", termLang.second);
+            intent.putExtra("definitionLanguage", definitionLang.second);
+            if (!(word == null)) {
+                intent.putExtra("word", word);
+                intent.putExtra("position", position);
+            }
+            startActivityForResult(intent, Values.WordEditActivityNew);
+        } else {
+            if ((toast == null) || !toast.getView().isShown()) {
+                toast = null;
+                toast = Toast.makeText(this, R.string.select_language_toast, Toast.LENGTH_LONG);
+                toast.show();
+            }
         }
-        startActivityForResult(intent, result);
     }
 
     public void setLanguage(String key, String language, String buttonID){
