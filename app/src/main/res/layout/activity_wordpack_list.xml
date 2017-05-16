@@ -1,24 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    android:id="@+id/main_content"
+<android.support.design.widget.CoordinatorLayout android:id="@+id/main_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id = "@+id/wordpacks_list"
-        android:layout_height="match_parent"
+    <ListView
+        android:id="@+id/wordpacks_list"
         android:layout_width="match_parent"
-        >
-    </ListView>
+        android:layout_height="match_parent">
 
+    </ListView>
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/wordpackAddButton"
+        android:id="@+id/FABMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@drawable/add"
+        app:elevation="5dp"
+        app:fabSize="normal"
         app:layout_anchor="@id/wordpacks_list"
         app:layout_anchorGravity="bottom|right|end" />
+
+    <View
+        android:id="@+id/gap"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        app:layout_anchor="@id/FABMenu"
+        app:layout_anchorGravity="top|center_horizontal">
+
+    </View>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/menu_createWordpack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:src="@drawable/add"
+        android:visibility="gone"
+        app:backgroundTint="@android:color/darker_gray"
+        app:elevation="5dp"
+        app:fabSize="mini"
+        app:layout_anchor="@id/gap"
+        app:layout_anchorGravity="top|center_horizontal"
+        app:rippleColor="@android:color/darker_gray" />
+    <TextView
+        android:id="@+id/menu_createWordpack_hint"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
+        android:paddingRight="5dp"
+        android:text="Create new wordpack"
+        app:layout_anchor="@id/menu_createWordpack"
+        app:layout_anchorGravity="left|center_vertical" />
+
+    <View
+        android:id="@+id/gap2"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        app:layout_anchor="@id/menu_createWordpack"
+        app:layout_anchorGravity="top|center_horizontal">
+
+    </View>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/menu_importWordpack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:src="@drawable/icon_download"
+        android:visibility="gone"
+        app:backgroundTint="@android:color/darker_gray"
+        app:elevation="5dp"
+        app:fabSize="mini"
+        app:layout_anchor="@id/gap2"
+        app:layout_anchorGravity="top|center_horizontal"
+        app:rippleColor="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/menu_importWordpack_hint"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
+        android:paddingRight="5dp"
+        android:text="Import wordpack from web"
+        app:layout_anchor="@id/menu_importWordpack"
+        app:layout_anchorGravity="left|center_vertical" />
+
+
+
+
+
 </android.support.design.widget.CoordinatorLayout>

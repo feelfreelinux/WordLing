@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_weight=".5"
             android:paddingLeft="5dp"
-            android:text="Term"
+            android:text="@string/word"
             android:textAlignment="textStart"
             android:textSize="18sp" />
 

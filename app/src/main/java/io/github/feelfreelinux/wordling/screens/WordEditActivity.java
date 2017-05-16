@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -48,7 +47,7 @@ public class WordEditActivity extends EditTextDialogActivity {
         editText = (EditText) header.findViewById(R.id.word);
 
         // Set tooltip text
-        ((TextView) header.findViewById(R.id.label)).setText(getString(R.string.term_in) + " " + getIntent().getStringExtra("termLanguage"));
+        ((TextView) header.findViewById(R.id.label)).setText(getString(R.string.word_in) + " " + getIntent().getStringExtra("termLanguage"));
 
         // Fill out data if intent contains data
         word = (Word) getIntent().getSerializableExtra("word");

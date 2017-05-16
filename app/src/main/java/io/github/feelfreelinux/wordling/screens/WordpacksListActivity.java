@@ -8,21 +8,24 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 import io.github.feelfreelinux.wordling.R;
 import io.github.feelfreelinux.wordling.WordLing;
-import io.github.feelfreelinux.wordling.adapters.WordpackEditorAdapter;
 import io.github.feelfreelinux.wordling.adapters.WordpackListAdapter;
 import io.github.feelfreelinux.wordling.dialogs.EditTextDialog;
 import io.github.feelfreelinux.wordling.dialogs.WordListMenuDialog;
 import io.github.feelfreelinux.wordling.objects.Wordpack;
 import io.github.feelfreelinux.wordling.objects.WordpackEntry;
 import io.github.feelfreelinux.wordling.objects.WordpackList;
+import io.github.feelfreelinux.wordling.utils.CloseAnimationListener;
 import io.github.feelfreelinux.wordling.utils.EditTextDialogActivity;
 import io.github.feelfreelinux.wordling.utils.SortedSessionManager;
 import io.github.feelfreelinux.wordling.utils.StorageWordpackManager;
@@ -33,9 +36,11 @@ public class WordpacksListActivity extends EditTextDialogActivity {
     private ListView listView;
     private StorageWordpackManager strMgr;
 
-    private FloatingActionButton fab;
+    private FloatingActionButton fabMenu, fabImport, fabCreate;
+    private TextView importHint, createHint;
     private WordpackListAdapter adapter;
     private WordpackList wordpacks;
+    private boolean fabOpen = false;
     ProgressDialog progress;
     WebWordpackDownloader wwd;
 
@@ -44,16 +49,32 @@ public class WordpacksListActivity extends EditTextDialogActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wordpack_list);
 
-        Intent intent = new Intent(this, WordpackEditorActivity.class);
-        startActivity(intent);
         // Set title
         setTitle(getResources().getString(R.string.wordpacksListTitle));
         listView = (ListView) findViewById(R.id.wordpacks_list);
-        fab = (FloatingActionButton) findViewById(R.id.wordpackAddButton);
-        // Construct add button click listener
-        fab.setOnClickListener(new View.OnClickListener() {
+        // Init parts of FAB menu
+        fabMenu = (FloatingActionButton) findViewById(R.id.FABMenu);
+        fabImport = (FloatingActionButton) findViewById(R.id.menu_importWordpack);
+        fabCreate = (FloatingActionButton) findViewById(R.id.menu_createWordpack);
+        importHint = (TextView) findViewById(R.id.menu_importWordpack_hint);
+        createHint = (TextView) findViewById(R.id.menu_createWordpack_hint);
+
+        // FAB Menu close / open listener
+        fabMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!fabOpen) openFABMenu();
+                else closeFABMenu();
+            }
+        });
+
+        // Import button listener
+        fabImport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeFABMenu();
+
+                // Open Import dialog
                 Bundle args = new Bundle();
                 args.putString("title", getResources().getString(R.string.wordpackImportTitle));
                 args.putString("buttonLabel", getResources().getString(R.string.wordpackImportButton));
@@ -61,6 +82,18 @@ public class WordpacksListActivity extends EditTextDialogActivity {
                 EditTextDialog dialog = new EditTextDialog();
                 dialog.setArguments(args);
                 dialog.show(getFragmentManager(), "dialog");
+            }
+        });
+
+        // Create button listener
+        fabCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeFABMenu();
+                // Open wordpack editor
+
+                Intent intent = new Intent(getApplicationContext(), WordpackEditorActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -123,6 +156,7 @@ public class WordpacksListActivity extends EditTextDialogActivity {
 
     @Override
     public void editTextAction(String url, Bundle args) {
+
         // Fill missing url data
         if(!url.startsWith("http://") && !url.startsWith("https://") ){
             url = "http://" + url;
@@ -165,6 +199,42 @@ public class WordpacksListActivity extends EditTextDialogActivity {
         adapter = new WordpackListAdapter(this, wordpacks);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
+    public void closeFABMenu(){
+        fabOpen = false;
+        fabMenu.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward));
+        // Start the animation
+        closeFABAnimation(fabImport, importHint);
+        closeFABAnimation(fabCreate, createHint);
+    }
+
+    public void openFABMenu(){
+        fabOpen = true;
+        fabMenu.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward));
+        // Start the animation
+        openFABAnimation(fabImport, importHint);
+        openFABAnimation(fabCreate, createHint);
+    }
+
+    public void openFABAnimation(final View view, final View hint) {
+        Animation slideUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
+
+        // Listener changes visibility to GONE on finish
+        view.setVisibility(View.VISIBLE);
+        hint.setVisibility(View.VISIBLE);
+
+        hint.startAnimation(slideUp);
+        view.startAnimation(slideUp);
+    }
+
+    public void closeFABAnimation(final View view, final View hint) {
+        Animation slideDown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
+        // Listener changes visibility to GONE on finish
+        CloseAnimationListener closeListener = new CloseAnimationListener();
+        closeListener.setView(view, hint);
+        slideDown.setAnimationListener(closeListener);
+        view.startAnimation(slideDown);
+        hint.startAnimation(slideDown);
     }
 
     @Override

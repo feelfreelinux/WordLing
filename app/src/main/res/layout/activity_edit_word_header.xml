@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:maxLines="1"
-        android:hint="@string/term"
+        android:hint="@string/word"
         android:textSize="20sp"
         android:id="@+id/word"
         android:layout_width="match_parent" />
