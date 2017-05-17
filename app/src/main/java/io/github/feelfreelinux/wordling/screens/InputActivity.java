@@ -38,6 +38,7 @@ public class InputActivity extends WordlingActivity {
         // Get manager
         manager = (SortedSessionManager) getIntent().getSerializableExtra("SortedSessionManager");
 
+        // Get new word
         word = manager.getNextWord();
 
         // Set title - name of wordpack

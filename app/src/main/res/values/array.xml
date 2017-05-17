@@ -4,4 +4,7 @@
         <item>@string/edit</item>
         <item>@string/deleteWordpack</item>
     </array>
+    <array name="wordDeleteMenuList">
+        <item>@string/deleteWordpack</item>
+    </array>
 </resources>

@@ -24,16 +24,19 @@
     <string name="edit_wordpack">Edytuj paczkę słówek</string>
     <string name="title">Tytuł</string>
     <string name="wordpack_description">Opis paczki słówek</string>
-    <string name="definition">Tłumaczenie</string>
-    <string name="select_language">Select language</string>
+    <string name="select_language">Wybierz język</string>
     <string name="word_in">Słówko w</string>
-    <string name="definition_in">Tłumaczenie w</string>
+    <string name="translation_in">Tłumaczenie w</string>
     <string name="add">Dodaj</string>
-    <string name="add_definition">Dodal tłumaczenie</string>
-    <string name="definition_error">Musisz dodać co najmniej jedną definicję</string>
-    <string name="definitions">Tłumaczenia</string>
-    <string name="edit_definition">Edytuj definicje</string>
+    <string name="add_definition">Dodaj tłumaczenie</string>
+    <string name="translation_error">Musisz dodać co najmniej jedno tłumaczenie</string>
+    <string name="translations">Tłumaczenia</string>
+    <string name="edit_translation">Edytuj definicje</string>
     <string name="field_empty">Te pole nie może być puste</string>
     <string name="save_changes">Zapisać zmiany?</string>
     <string name="select_language_toast">Najpierw wybierz język</string>
+    <string name="create_new_wordpack">Stwórz nową paczkę słówek</string>
+    <string name="no_word_error">Dodaj przynajmniej jedno słówko</string>
+    <string name="ask_delete_wordpack">Czy napewno chcesz usunąć tą paczkę słówek?</string>
+    <string name="delete_wordpack">Usuń paczkę słówek</string>
 </resources>

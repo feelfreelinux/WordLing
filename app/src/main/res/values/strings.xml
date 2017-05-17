@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Word Ling</string>
+    <string name="app_name">WordLing</string>
     <string name="wordpacksListTitle">Select Word Pack</string>
     <string name="nextButton">Next</string>
     <string name="checkButton">Check</string>
@@ -23,16 +23,19 @@
     <string name="edit_wordpack">Edit word pack</string>
     <string name="title">Title</string>
     <string name="wordpack_description">Word pack description</string>
-    <string name="definition">Translation</string>
     <string name="select_language">Select language</string>
     <string name="word_in">Word in</string>
-    <string name="definition_in">Translation in</string>
+    <string name="translation_in">Translation in</string>
     <string name="add_definition">Add translation</string>
     <string name="add">Add</string>
-    <string name="edit_definition">Edit definition</string>
-    <string name="definitions">Translations</string>
+    <string name="edit_translation">Edit definition</string>
+    <string name="translations">Translations</string>
     <string name="field_empty">This field cannot be blank.</string>
     <string name="save_changes">Save changes?</string>
     <string name="select_language_toast">Select language first</string>
-    <string name="definition_error">You need to add at least one definition</string>
+    <string name="translation_error">You need to add at least one translation</string>
+    <string name="no_word_error">You need to add at least one word</string>
+    <string name="create_new_wordpack">Create new wordpack</string>
+    <string name="delete_wordpack">Delete word pack</string>
+    <string name="ask_delete_wordpack">Are you sure you want to delete this word pack?</string>
 </resources>

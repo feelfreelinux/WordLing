@@ -21,10 +21,13 @@ import io.github.feelfreelinux.wordling.R;
 import io.github.feelfreelinux.wordling.Values;
 import io.github.feelfreelinux.wordling.adapters.WordEditAdapter;
 import io.github.feelfreelinux.wordling.dialogs.EditTextDialog;
+import io.github.feelfreelinux.wordling.dialogs.WordDeleteMenuDialog;
 import io.github.feelfreelinux.wordling.objects.Word;
-import io.github.feelfreelinux.wordling.utils.EditTextDialogActivity;
+import io.github.feelfreelinux.wordling.utils.DeleteWordListener;
+import io.github.feelfreelinux.wordling.utils.EditTextDialogActionListener;
+import io.github.feelfreelinux.wordling.utils.WordlingActivity;
 
-public class WordEditActivity extends EditTextDialogActivity {
+public class WordEditActivity extends WordlingActivity implements EditTextDialogActionListener, DeleteWordListener {
     ArrayList<String> wordList;
     WordEditAdapter adapter;
     EditText editText;
@@ -66,6 +69,23 @@ public class WordEditActivity extends EditTextDialogActivity {
 
                 // Open dialog editing this value
                 openDefinitionDialog((String) parent.getItemAtPosition(position), position);
+            }
+        });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                String word = ((String) parent.getItemAtPosition(position));
+                WordDeleteMenuDialog dialog = new WordDeleteMenuDialog();
+                // Construct dialog bundle with string data
+                Bundle args = new Bundle();
+
+                // Show word, get index
+                args.putString("word", word);
+
+                args.putInt("index", position-1);
+                dialog.setArguments(args);
+                dialog.show(getFragmentManager(), "dialog");
+                return true;
             }
         });
 
@@ -131,7 +151,7 @@ public class WordEditActivity extends EditTextDialogActivity {
                 // Show toast, only if prev toast is not showing
                 if ((toast == null) || !toast.getView().isShown()) {
                     toast = null;
-                    toast = Toast.makeText(this, getString(R.string.definition_error), Toast.LENGTH_LONG);
+                    toast = Toast.makeText(this, getString(R.string.translation_error), Toast.LENGTH_LONG);
                     toast.show();
                 }
             }
@@ -159,10 +179,10 @@ public class WordEditActivity extends EditTextDialogActivity {
         // Construct dialog bundle with string data
         Bundle args = new Bundle();
 
-        args.putString("hint", getString(R.string.definition_in) + " " + getIntent().getStringExtra("definitionLanguage"));
+        args.putString("hint", getString(R.string.translation_in) + " " + getIntent().getStringExtra("definitionLanguage"));
         args.putString("buttonLabel", getString(R.string.add));
         if(position > -1) {
-            args.putString("title", getString(R.string.edit_definition));
+            args.putString("title", getString(R.string.edit_translation));
             args.putInt("position", position);
         } else args.putString("title", getString(R.string.add_definition));
         if (!(pretypedText == null)) args.putString("pretyped", pretypedText);
@@ -177,5 +197,12 @@ public class WordEditActivity extends EditTextDialogActivity {
                 showAskAlert();
         }
         return true;
+    }
+
+    @Override
+    public void OnDeleteWord(int index) {
+        // Remove the word, and update adapter
+        wordList.remove(index);
+        adapter.notifyDataSetChanged();
     }
 }

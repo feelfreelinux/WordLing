@@ -18,7 +18,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/description"
         android:orientation="horizontal"
         android:weightSum="1.0">
 
@@ -26,7 +25,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
-            android:paddingLeft="5dp"
+            android:padding="5dp"
             android:text="@string/word"
             android:textAlignment="textStart"
             android:textSize="18sp" />
@@ -35,7 +34,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
-            android:text="@string/definition"
+            android:text="@string/translation"
             android:textAlignment="textStart"
             android:textSize="18sp" />
 
@@ -43,7 +42,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/description"
         android:orientation="horizontal"
         android:weightSum="1.0">
 
@@ -53,7 +51,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
-            android:paddingLeft="5dp"
+            android:padding="5dp"
             android:text="@string/select_language"
             android:textAlignment="viewStart" />
 

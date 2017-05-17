@@ -21,7 +21,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/definitions"
+        android:text="@string/translations"
         android:id="@+id/labelDefinitions"
         android:textAlignment="center" />
 </LinearLayout>

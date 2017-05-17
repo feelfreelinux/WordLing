@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import io.github.feelfreelinux.wordling.R;
+import io.github.feelfreelinux.wordling.Values;
 import io.github.feelfreelinux.wordling.WordLing;
 import io.github.feelfreelinux.wordling.adapters.WordpackListAdapter;
 import io.github.feelfreelinux.wordling.dialogs.EditTextDialog;
@@ -26,13 +29,14 @@ import io.github.feelfreelinux.wordling.objects.Wordpack;
 import io.github.feelfreelinux.wordling.objects.WordpackEntry;
 import io.github.feelfreelinux.wordling.objects.WordpackList;
 import io.github.feelfreelinux.wordling.utils.CloseAnimationListener;
-import io.github.feelfreelinux.wordling.utils.EditTextDialogActivity;
+import io.github.feelfreelinux.wordling.utils.EditTextDialogActionListener;
 import io.github.feelfreelinux.wordling.utils.SortedSessionManager;
 import io.github.feelfreelinux.wordling.utils.StorageWordpackManager;
 import io.github.feelfreelinux.wordling.utils.WebWordpackDownloader;
+import io.github.feelfreelinux.wordling.utils.WordlingActivity;
 import io.github.feelfreelinux.wordling.utils.WordpackParser;
 
-public class WordpacksListActivity extends EditTextDialogActivity {
+public class WordpacksListActivity extends WordlingActivity implements EditTextDialogActionListener {
     private ListView listView;
     private StorageWordpackManager strMgr;
 
@@ -52,6 +56,7 @@ public class WordpacksListActivity extends EditTextDialogActivity {
         // Set title
         setTitle(getResources().getString(R.string.wordpacksListTitle));
         listView = (ListView) findViewById(R.id.wordpacks_list);
+
         // Init parts of FAB menu
         fabMenu = (FloatingActionButton) findViewById(R.id.FABMenu);
         fabImport = (FloatingActionButton) findViewById(R.id.menu_importWordpack);
@@ -64,7 +69,7 @@ public class WordpacksListActivity extends EditTextDialogActivity {
             @Override
             public void onClick(View v) {
                 if (!fabOpen) openFABMenu();
-                else closeFABMenu();
+                else closeFABMenu(null);
             }
         });
 
@@ -72,16 +77,19 @@ public class WordpacksListActivity extends EditTextDialogActivity {
         fabImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                closeFABMenu();
-
-                // Open Import dialog
-                Bundle args = new Bundle();
-                args.putString("title", getResources().getString(R.string.wordpackImportTitle));
-                args.putString("buttonLabel", getResources().getString(R.string.wordpackImportButton));
-                args.putString("hint", getResources().getString(R.string.urlAddress));
-                EditTextDialog dialog = new EditTextDialog();
-                dialog.setArguments(args);
-                dialog.show(getFragmentManager(), "dialog");
+                closeFABMenu(new CloseAnimationListener.FabCloseListener() {
+                    @Override
+                    public void onClose() {
+                        // Open Import dialog
+                        Bundle args = new Bundle();
+                        args.putString("title", getResources().getString(R.string.wordpackImportTitle));
+                        args.putString("buttonLabel", getResources().getString(R.string.wordpackImportButton));
+                        args.putString("hint", getResources().getString(R.string.urlAddress));
+                        EditTextDialog dialog = new EditTextDialog();
+                        dialog.setArguments(args);
+                        dialog.show(getFragmentManager(), "dialog");
+                    }
+                });
             }
         });
 
@@ -89,11 +97,14 @@ public class WordpacksListActivity extends EditTextDialogActivity {
         fabCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                closeFABMenu();
-                // Open wordpack editor
-
-                Intent intent = new Intent(getApplicationContext(), WordpackEditorActivity.class);
-                startActivity(intent);
+                closeFABMenu(new CloseAnimationListener.FabCloseListener() {
+                    @Override
+                    public void onClose() {
+                        // Open wordpack editor
+                        Intent intent = new Intent(getApplicationContext(), WordpackEditorActivity.class);
+                        startActivityForResult(intent, Values.WordpackEditor);
+                    }
+                });
             }
         });
 
@@ -121,8 +132,8 @@ public class WordpacksListActivity extends EditTextDialogActivity {
                     // Get Locale from wordpack BCP-47 code (In api 21)
                     Locale locale;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                        locale = Locale.forLanguageTag(wordpack.getTranslationLang());
-                    else locale = new Locale(wordpack.getTranslationLang());
+                        locale = Locale.forLanguageTag(wordpack.getWordLanguage());
+                    else locale = new Locale(wordpack.getWordLanguage());
 
                     // Init TTS service
                     ((WordLing) getApplication()).initTTS(locale);
@@ -200,12 +211,15 @@ public class WordpacksListActivity extends EditTextDialogActivity {
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
-    public void closeFABMenu(){
+
+    public void closeFABMenu(CloseAnimationListener.FabCloseListener listener) {
         fabOpen = false;
         fabMenu.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward));
+        fabImport.setClickable(false);
+        fabCreate.setClickable(false);
         // Start the animation
-        closeFABAnimation(fabImport, importHint);
-        closeFABAnimation(fabCreate, createHint);
+        closeFABAnimation(fabImport, importHint, listener);
+        closeFABAnimation(fabCreate, createHint, null);
     }
 
     public void openFABMenu(){
@@ -214,6 +228,14 @@ public class WordpacksListActivity extends EditTextDialogActivity {
         // Start the animation
         openFABAnimation(fabImport, importHint);
         openFABAnimation(fabCreate, createHint);
+        fabImport.setClickable(true);
+        fabCreate.setClickable(true);
+    }
+
+    public void editWordpack(WordpackEntry entry) {
+        Intent intent = new Intent(getApplicationContext(), WordpackEditorActivity.class);
+        intent.putExtra("wordpack", entry);
+        startActivityForResult(intent, Values.WordpackEditor);
     }
 
     public void openFABAnimation(final View view, final View hint) {
@@ -227,11 +249,11 @@ public class WordpacksListActivity extends EditTextDialogActivity {
         view.startAnimation(slideUp);
     }
 
-    public void closeFABAnimation(final View view, final View hint) {
+    public void closeFABAnimation(final View view, final View hint, @Nullable CloseAnimationListener.FabCloseListener listener) {
         Animation slideDown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down);
         // Listener changes visibility to GONE on finish
         CloseAnimationListener closeListener = new CloseAnimationListener();
-        closeListener.setView(view, hint);
+        closeListener.setView(view, hint, listener);
         slideDown.setAnimationListener(closeListener);
         view.startAnimation(slideDown);
         hint.startAnimation(slideDown);
@@ -241,5 +263,28 @@ public class WordpacksListActivity extends EditTextDialogActivity {
     protected void onDestroy() {
         ((WordLing) getApplication()).shutdown();
         super.onDestroy();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Handle word editor exit
+        if (resultCode == Values.WordpackEdited) {
+            refreshList();
+        }
+    }
+
+    public void safeDeleteWordpack(final String key) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.delete_wordpack)
+                .setMessage(R.string.ask_delete_wordpack)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Delete the wordpack, refresh ListView
+                        new StorageWordpackManager(getApplicationContext()).removeWordpack(key);
+                        refreshList();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null).show();
     }
 }

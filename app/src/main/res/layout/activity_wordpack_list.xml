@@ -49,9 +49,9 @@
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left|center_vertical"
-        android:paddingRight="5dp"
-        android:text="Create new wordpack"
+        android:layout_gravity="start|center_vertical"
+        android:padding="5dp"
+        android:text="@string/create_new_wordpack"
         app:layout_anchor="@id/menu_createWordpack"
         app:layout_anchorGravity="left|center_vertical" />
 
@@ -83,9 +83,9 @@
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left|center_vertical"
-        android:paddingRight="5dp"
-        android:text="Import wordpack from web"
+        android:layout_gravity="start|center_vertical"
+        android:padding="5dp"
+        android:text="@string/wordpackImportTitle"
         app:layout_anchor="@id/menu_importWordpack"
         app:layout_anchorGravity="left|center_vertical" />
 

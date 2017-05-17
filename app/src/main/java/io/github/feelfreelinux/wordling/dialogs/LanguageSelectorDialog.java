@@ -6,66 +6,61 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
+import io.github.feelfreelinux.wordling.R;
 import io.github.feelfreelinux.wordling.screens.WordpackEditorActivity;
 
 
 public class LanguageSelectorDialog extends DialogFragment {
-    Map<String, String> availableLanguages;
+    ArrayList<Pair<String, String>> availableLanguages;
     String buttonID;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         buttonID = getArguments().getString("buttonID");
 
-        availableLanguages = new HashMap<>();
+        availableLanguages = new ArrayList<>();
+
         // Get list of available languages
         for (Locale l : Locale.getAvailableLocales())
-            if(!availableLanguages.containsKey(l.getLanguage())) // We only want to store Language list
-                availableLanguages.put(l.getLanguage(),
-                        l.getDisplayLanguage().substring(0, 1).toUpperCase() + l.getDisplayLanguage().substring(1)); // First letter uppercase
-        // Sort Map
-        availableLanguages = sortByValue(availableLanguages);
-        final List<String> printableList = new ArrayList<String>(availableLanguages.values());
-        final List<String> keyList = new ArrayList<String>(availableLanguages.keySet());
+            if(!checkLangCodeDuplication(l.getLanguage())) // We only want to store Language list
+                availableLanguages.add( new Pair<> (l.getLanguage(),
+                        l.getDisplayLanguage().substring(0, 1).toUpperCase() + l.getDisplayLanguage().substring(1))); // First letter uppercase
+
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Select language")
-                .setItems(printableList.toArray(new CharSequence[printableList.size()]), new DialogInterface.OnClickListener() {
+        Collections.sort(availableLanguages, new Comparator<Pair<String, String>>() {
+            @Override
+            public int compare(Pair<String, String> o1, Pair<String, String> o2) {
+                return o1.second.compareTo(o2.second);
+            }
+        });
+
+        // Create Array of display names
+        CharSequence[] displayNameList = new CharSequence[availableLanguages.size()];
+        for (Pair<String, String> language : availableLanguages)
+            displayNameList[availableLanguages.indexOf(language)] = language.second;
+
+        builder.setTitle(getString(R.string.select_language))
+                .setItems(displayNameList, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ((WordpackEditorActivity) getActivity()).setLanguage(keyList.get(which), printableList.get(which), buttonID);
+                        ((WordpackEditorActivity) getActivity()).setLanguage(availableLanguages.get(which).first, availableLanguages.get(which).second, buttonID);
                     }
                 });
         return builder.create();
     }
 
-    // Sorts Map. from http://stackoverflow.com/questions/109383/sort-a-mapkey-value-by-values-java
-    private static <K, V> Map<K, V> sortByValue(Map<K, V> map) {
-        List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
-        Collections.sort(list, new Comparator<Object>() {
-            @SuppressWarnings("unchecked")
-            public int compare(Object o1, Object o2) {
-                return ((Comparable<V>) ((Map.Entry<K, V>) (o1)).getValue()).compareTo(((Map.Entry<K, V>) (o2)).getValue());
-            }
-        });
-
-        Map<K, V> result = new LinkedHashMap<>();
-        for (Iterator<Map.Entry<K, V>> it = list.iterator(); it.hasNext();) {
-            Map.Entry<K, V> entry = (Map.Entry<K, V>) it.next();
-            result.put(entry.getKey(), entry.getValue());
+    private boolean checkLangCodeDuplication(String code) {
+        for (Pair<String, String> language : availableLanguages) {
+            if (language.first.equals(code)) return true;
         }
-
-        return result;
+        return false;
     }
 }

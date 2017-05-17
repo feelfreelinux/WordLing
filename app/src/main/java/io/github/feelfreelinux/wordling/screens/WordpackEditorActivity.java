@@ -1,45 +1,51 @@
 package io.github.feelfreelinux.wordling.screens;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
+import android.support.v7.app.AlertDialog;
 import android.util.Pair;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.Locale;
 
 import io.github.feelfreelinux.wordling.R;
 import io.github.feelfreelinux.wordling.Values;
-import io.github.feelfreelinux.wordling.adapters.WordEditAdapter;
+import io.github.feelfreelinux.wordling.WordLing;
 import io.github.feelfreelinux.wordling.adapters.WordpackEditorAdapter;
-import io.github.feelfreelinux.wordling.dialogs.EditTextDialog;
 import io.github.feelfreelinux.wordling.dialogs.LanguageSelectorDialog;
+import io.github.feelfreelinux.wordling.dialogs.WordDeleteMenuDialog;
 import io.github.feelfreelinux.wordling.objects.Word;
-import io.github.feelfreelinux.wordling.utils.EditTextDialogActivity;
+import io.github.feelfreelinux.wordling.objects.Wordpack;
+import io.github.feelfreelinux.wordling.objects.WordpackEntry;
+import io.github.feelfreelinux.wordling.utils.DeleteWordListener;
+import io.github.feelfreelinux.wordling.utils.StorageWordpackManager;
 import io.github.feelfreelinux.wordling.utils.WordlingActivity;
 
-public class WordpackEditorActivity extends WordlingActivity {
+public class WordpackEditorActivity extends WordlingActivity implements DeleteWordListener {
     private ListView listView;
     private LinearLayout header;
     private FloatingActionButton fab;
-    private Map<String, String> availableLanguages;
+    private EditText description, title;
     private Button langOrigin, langTranslation;
     private List<Word> wordList;
     private Pair<String, String> termLang, definitionLang;
     private WordpackEditorAdapter adapter;
     private Toast toast;
+    private StorageWordpackManager strMgr;
+    private Wordpack wordpack;
+    private WordpackEntry entry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +54,76 @@ public class WordpackEditorActivity extends WordlingActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(getString(R.string.edit_wordpack));
 
+        // Get storageWordpackManager
+        strMgr = new StorageWordpackManager(this);
         wordList = new ArrayList<>();
 
         listView = (ListView) findViewById(R.id.list);
 
+        // Set longClick listener
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Word word = ((Word) parent.getItemAtPosition(position));
+                WordDeleteMenuDialog dialog = new WordDeleteMenuDialog();
+
+                // Construct dialog bundle with string data
+                Bundle args = new Bundle();
+
+                // Show word, get index
+                args.putString("word", word.getTranslationLangQuestion());
+                args.putInt("index", position-1);
+
+                dialog.setArguments(args);
+                dialog.show(getFragmentManager(), "dialog");
+                return true;
+            }
+        });
+
         // Inflate Header View
         header = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_wordpack_editor_header, null, false);
+
+        // Get edit text's
+        description = (EditText) header.findViewById(R.id.description);
+        title = (EditText) header.findViewById(R.id.name);
+
+        // Get buttons
+        langOrigin = (Button) header.findViewById(R.id.langOrigin);
+        langOrigin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLanguageDialog("origin");
+            }
+        });
+
+        langTranslation = (Button) header.findViewById(R.id.langTranslation);
+        langTranslation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLanguageDialog("translation");
+            }
+        });
+
+        // Fill data with edited wordpack
+        if ((getIntent().getSerializableExtra("wordpack")) != null) {
+            entry = (WordpackEntry) getIntent().getSerializableExtra("wordpack");
+            wordpack = strMgr.getWordpackFromStorage(entry.key);
+            if(wordpack != null) {
+                // Fill out fields
+                description.setText(wordpack.getDescription());
+                title.setText(wordpack.getTitle());
+                wordList.addAll(wordpack.pack);
+                Locale wordLocale = ((WordLing) getApplication()).getLocaleFromString(wordpack.getWordLanguage()),
+                        translationLocale = ((WordLing) getApplication()).getLocaleFromString(wordpack.getTranslationLanguage());
+                // Set locales
+                setLanguage(wordLocale.getLanguage(),
+                        wordLocale.getDisplayLanguage().substring(0, 1).toUpperCase() + wordLocale.getDisplayLanguage().substring(1),
+                        "translation");
+                setLanguage(translationLocale.getLanguage(),
+                        translationLocale.getDisplayLanguage().substring(0, 1).toUpperCase() + translationLocale.getDisplayLanguage().substring(1),
+                        "origin");
+            }
+        }
 
         listView.addHeaderView(header, null, false);
         adapter = new WordpackEditorAdapter(this, wordList);
@@ -75,23 +145,6 @@ public class WordpackEditorActivity extends WordlingActivity {
                 openWordEditor(null, -1);
             }
         });
-        langOrigin = (Button) header.findViewById(R.id.langOrigin);
-        langOrigin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openLanguageDialog("origin");
-            }
-        });
-
-        langTranslation = (Button) header.findViewById(R.id.langTranslation);
-        langTranslation.setError(null);
-        langTranslation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openLanguageDialog("translation");
-            }
-        });
-
 
     }
 
@@ -135,6 +188,7 @@ public class WordpackEditorActivity extends WordlingActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Handle word editor exit
         if (resultCode != Values.WordEditActivityBlank ) {
             Word word = (Word) data.getSerializableExtra("word");
             if ((!(word == null)) && word.getOriginLangQuestions().size() > 0) {
@@ -147,6 +201,75 @@ public class WordpackEditorActivity extends WordlingActivity {
         }
     }
 
+    public void validateAndExit(){
+        if (!filledData()) {
+            if (!(wordList.size() > 0)) {
+                // Only show toast if its not already shown
+                if (toast == null || !toast.getView().isShown()) {
+                    toast = null;
+                    toast = Toast.makeText(getApplicationContext(), R.string.no_word_error, Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }
+                if (description.getText().toString().isEmpty()) description.setError(getString(R.string.field_empty));
+            if (title.getText().toString().isEmpty()) title.setError(getString(R.string.field_empty));
+
+        } else {
+            // Validate, save, and exit
+            if (entry != null) {
+                strMgr.editWordpack(entry.key,
+                        getWordpack().toJSONString(),
+                        getWordpack().getTitle(),
+                        getWordpack().getDescription());
+            } else strMgr.addWordpackToMemory(getWordpack());
+
+            setResult(Values.WordpackEdited);
+            finish();
+        }
+    }
+
+    public boolean filledData(){
+        if (definitionLang != null
+                && termLang != null
+                && !description.getText().toString().isEmpty()
+                && !title.getText().toString().isEmpty()
+                && wordList.size() > 0) return true;
+        else return false;
+    }
+
+    public void showAskAlert() {
+        if (filledData() && wordpack != null && wordpack.compareTo(getWordpack())) {
+            setResult(Values.WordEditActivityBlank);
+            finish();
+        } else {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.save_changes)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            validateAndExit();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            setResult(Values.WordEditActivityBlank);
+                            finish();
+                        }
+
+                    }).show();
+        }
+
+    }
+
+    public void onBackPressed() {
+        showAskAlert();
+    }
+
+    public Wordpack getWordpack() {
+        return new Wordpack((ArrayList<Word>) this.wordList, definitionLang.first, termLang.first, description.getText().toString(), title.getText().toString());
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -154,5 +277,12 @@ public class WordpackEditorActivity extends WordlingActivity {
                 this.finish();
         }
         return true;
+    }
+
+    @Override
+    public void OnDeleteWord(int index) {
+        // Remove word from list
+        wordList.remove(index);
+        adapter.notifyDataSetChanged();
     }
 }

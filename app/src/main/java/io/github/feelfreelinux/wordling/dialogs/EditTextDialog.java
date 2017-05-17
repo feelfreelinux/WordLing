@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import io.github.feelfreelinux.wordling.R;
-import io.github.feelfreelinux.wordling.utils.EditTextDialogActivity;
+import io.github.feelfreelinux.wordling.utils.EditTextDialogActionListener;
 
 public class EditTextDialog extends DialogFragment {
     EditText editText;
@@ -44,7 +44,7 @@ public class EditTextDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         if (!editText.getText().toString().isEmpty())
                         // Call callback
-                        ((EditTextDialogActivity) getActivity()).editTextAction(editText.getText().toString(), getArguments());
+                        ((EditTextDialogActionListener) getActivity()).editTextAction(editText.getText().toString(), getArguments());
                     }
                 });
         return builder.create();

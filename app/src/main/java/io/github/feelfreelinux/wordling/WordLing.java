@@ -42,6 +42,12 @@ public class WordLing extends Application {
         });
     }
 
+    public Locale getLocaleFromString(String locale) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            return(Locale.forLanguageTag(locale));
+        else return (new Locale(locale));
+    }
+
     public boolean ttsReady(){
         return ttsInit;
     }

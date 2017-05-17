@@ -34,14 +34,26 @@ public class StorageWordpackManager {
         return wordpackList;
     }
 
+    public void editWordpack(String key, String editedJSON, String title, String description) {
+        // This function edits wordpack
+        saveJSONtoMemory(key, editedJSON);
+        WordpackList list = getWordpackListFromStorage();
+        for (WordpackEntry entry : list.getWordpackEntries())
+            if (entry.key.equals(key)) {
+                entry.description = description;
+                entry.title = title;
+                break;
+            }
+        saveJSONtoMemory("wordpacks", list.toString());
+    }
+
     public void removeWordpack(String uniqueKey) {
         // Remove wordpack From storage
         storage.edit().remove(uniqueKey).apply();
         WordpackList wordpackList = getWordpackListFromStorage();
         // Drop entry from wordpack list
-        int indexToRemove;
         for (WordpackEntry entry : wordpackList.getWordpackEntries())
-            if (entry.key.compareTo(uniqueKey) == 0) {
+            if (entry.key.equals(uniqueKey)) {
                 wordpackList.getWordpackEntries().remove(entry);
                 break;
             }

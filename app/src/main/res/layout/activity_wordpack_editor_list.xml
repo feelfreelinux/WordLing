@@ -12,6 +12,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/add"
         app:elevation="5dp"
+        app:fabSize="normal"
         app:layout_anchor="@id/list"
         app:layout_anchorGravity="bottom|right|end" />
 

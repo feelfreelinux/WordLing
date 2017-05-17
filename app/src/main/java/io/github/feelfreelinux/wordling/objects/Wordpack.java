@@ -1,5 +1,7 @@
 package io.github.feelfreelinux.wordling.objects;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,10 +21,12 @@ public class Wordpack implements Serializable {
         this.title = title;
     }
 
-    public String getTranslationLang() {
+    public String getWordLanguage() {
         return translationLang;
     }
-
+    public String getTranslationLanguage() {
+        return originLang;
+    }
     // Convert wordpack to json string
     public String toJSONString() {
         JSONObject rawData = new JSONObject();
@@ -62,7 +66,12 @@ public class Wordpack implements Serializable {
 
         return rawData.toString();
     }
-
+    public boolean compareTo(Wordpack wordpackCompare) {
+        Log.v("DOGGO", wordpackCompare.toJSONString());
+        Log.v("DOGGER", toJSONString());
+        if (wordpackCompare.toJSONString().equals(toJSONString())) Log.v("COMPARE", "OKOK");
+        return wordpackCompare.toJSONString().equals(toJSONString());
+    }
     public String getTitle(){
         return title;
     }
