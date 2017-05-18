@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight=".75"
-            android:text="Margin of error in percent. 80% is recommended value."
+            android:text="@string/margin_of_error_in_percent_80_is_recommended_value"
             android:textAlignment="center" />
     </LinearLayout>
 

@@ -41,4 +41,5 @@
     <string name="empty_wordlist">Create or import word pack to begin.</string>
     <string name="add_words_you_want_to_learn">Add words you want to learn.</string>
     <string name="add_possible_translations">Add possible translations.</string>
+    <string name="margin_of_error_in_percent_80_is_recommended_value">Margin of error in percent. 80% is recommended value.</string>
 </resources>
