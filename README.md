@@ -1,6 +1,6 @@
 ![WordLing Logo](app/src/main/res/mipmap-xxhdpi/ic_launcher.png) 
 # WordLing
-WordLing is modern, opensource Android app which helps you learn hard to remember words from any languages.
+WordLing is modern, opensource Android app which helps you learn hard to remember words from any language.
 
 ## Features
 - You can create your own word packs, containing all the words you want to learn
