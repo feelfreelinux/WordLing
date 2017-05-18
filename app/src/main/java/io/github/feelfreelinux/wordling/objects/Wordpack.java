@@ -11,14 +11,16 @@ import java.util.ArrayList;
 
 public class Wordpack implements Serializable {
     public ArrayList<Word> pack;
+    private int errorMargin;
     private String originLang, translationLang, description, title;
 
-    public Wordpack(ArrayList<Word> pack, String originLang, String translationLang, String description, String title) {
+    public Wordpack(ArrayList<Word> pack, String originLang, String translationLang, String description, String title, int errorMargin) {
         this.pack = pack;
         this.originLang = originLang;
         this.translationLang = translationLang;
         this.description = description;
         this.title = title;
+        this.errorMargin = errorMargin;
     }
 
     public String getWordLanguage() {
@@ -27,6 +29,7 @@ public class Wordpack implements Serializable {
     public String getTranslationLanguage() {
         return originLang;
     }
+    public int getErrorMargin() {return errorMargin;}
     // Convert wordpack to json string
     public String toJSONString() {
         JSONObject rawData = new JSONObject();
@@ -35,6 +38,7 @@ public class Wordpack implements Serializable {
             rawData.put("title", this.title);
             rawData.put("from", this.originLang);
             rawData.put("to", this.translationLang);
+            rawData.put("error_margin", this.errorMargin);
 
             JSONArray pack = new JSONArray();
 

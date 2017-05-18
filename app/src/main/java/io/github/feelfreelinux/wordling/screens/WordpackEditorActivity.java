@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +35,7 @@ import io.github.feelfreelinux.wordling.objects.Word;
 import io.github.feelfreelinux.wordling.objects.Wordpack;
 import io.github.feelfreelinux.wordling.objects.WordpackEntry;
 import io.github.feelfreelinux.wordling.utils.DeleteWordListener;
+import io.github.feelfreelinux.wordling.utils.InputFilterMinMax;
 import io.github.feelfreelinux.wordling.utils.StorageWordpackManager;
 import io.github.feelfreelinux.wordling.utils.WordlingActivity;
 
@@ -43,6 +48,7 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
     private List<Word> wordList;
     private Pair<String, String> termLang, definitionLang;
     private WordpackEditorAdapter adapter;
+    private EditText percentChooser;
     private Toast toast;
     private StorageWordpackManager strMgr;
     private Wordpack wordpack;
@@ -88,9 +94,12 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
         // Inflate Header View
         header = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_wordpack_editor_header, null, false);
 
-        // Get edit text's
+        // Get edit texts
         description = (EditText) header.findViewById(R.id.description);
         title = (EditText) header.findViewById(R.id.name);
+        percentChooser = (EditText) header.findViewById(R.id.percentChooser);
+        // Set filter for percent
+        percentChooser.setFilters(new InputFilter[]{ new InputFilterMinMax("1", "100")});
 
         // Get buttons
         langOrigin = (Button) header.findViewById(R.id.langOrigin);
@@ -118,6 +127,7 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
                 // Fill out fields
                 description.setText(wordpack.getDescription());
                 title.setText(wordpack.getTitle());
+                percentChooser.setText(Integer.toString(wordpack.getErrorMargin()));
                 wordList.addAll(wordpack.pack);
                 Locale wordLocale = ((WordLing) getApplication()).getLocaleFromString(wordpack.getWordLanguage()),
                         translationLocale = ((WordLing) getApplication()).getLocaleFromString(wordpack.getTranslationLanguage());
@@ -228,7 +238,8 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
                     toast.show();
                 }
             }
-                if (description.getText().toString().isEmpty()) description.setError(getString(R.string.field_empty));
+            if (description.getText().toString().isEmpty()) description.setError(getString(R.string.field_empty));
+            if (percentChooser.getText().toString().isEmpty()) percentChooser.setError(getString(R.string.field_empty));
             if (title.getText().toString().isEmpty()) title.setError(getString(R.string.field_empty));
 
         } else {
@@ -249,6 +260,7 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
         if (definitionLang != null
                 && termLang != null
                 && !description.getText().toString().isEmpty()
+                && !percentChooser.getText().toString().isEmpty()
                 && !title.getText().toString().isEmpty()
                 && wordList.size() > 0) return true;
         else return false;
@@ -284,7 +296,11 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
     }
 
     public Wordpack getWordpack() {
-        return new Wordpack((ArrayList<Word>) this.wordList, definitionLang.first, termLang.first, description.getText().toString(), title.getText().toString());
+        return new Wordpack((ArrayList<Word>) this.wordList, definitionLang.first,
+                termLang.first,
+                description.getText().toString(),
+                title.getText().toString(),
+                Integer.parseInt(percentChooser.getText().toString()));
     }
 
     @Override

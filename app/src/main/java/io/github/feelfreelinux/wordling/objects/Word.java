@@ -35,8 +35,8 @@ public class Word implements Serializable, Cloneable {
         return this.langTo;
     }
 
-    public boolean checkAnswer(String answer){
-        if(new JaroDistance().calculate(answer.toLowerCase(), this.langTo.toLowerCase()) > Values.jaroDistanceValue) {
+    public boolean checkAnswer(String answer, int errorMargin){
+        if(new JaroDistance().calculate(answer.toLowerCase(), this.langTo.toLowerCase()) > (errorMargin/100)) {
             if(!repeated && !skipped) this.passedAttempts++;
             return true;
         }

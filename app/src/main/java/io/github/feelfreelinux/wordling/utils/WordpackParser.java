@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import io.github.feelfreelinux.wordling.Values;
 import io.github.feelfreelinux.wordling.objects.Word;
 import io.github.feelfreelinux.wordling.objects.Wordpack;
 import io.github.feelfreelinux.wordling.objects.WordpackEntry;
@@ -25,6 +26,9 @@ public class WordpackParser {
                 String translationLang = jsonData.getString("to");
                 String description = jsonData.getString("description");
                 String title = jsonData.getString("title");
+                int errorMargin;
+                if (jsonData.has("error_margin")) errorMargin = jsonData.getInt("error_margin");
+                else errorMargin = Values.DefaultErrorMargin; // Default value
 
                 // Enumerate JSON array containing words
                 for (int i = 0; i < pack.length(); i++) {
@@ -45,7 +49,7 @@ public class WordpackParser {
                     words.add(new Word(origin, translation, passed, failed));
                 }
 
-                return new Wordpack(words, originLang, translationLang, description, title);
+                return new Wordpack(words, originLang, translationLang, description, title, errorMargin);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

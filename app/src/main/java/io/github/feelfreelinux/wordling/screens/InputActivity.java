@@ -89,7 +89,7 @@ public class InputActivity extends WordlingActivity {
             intent.putExtra("SortedSessionManager", manager);
             intent.putExtra("REPEATED", word.isRepeated());
             // Pass anwser result
-            if (word.checkAnswer(anwser))
+            if (word.checkAnswer(anwser, manager.getWordpack().getErrorMargin()))
                 intent.putExtra("PASSED", true);
                 if(!word.isRepeated() || word.isSkipped()) manager.passed();
             else {
