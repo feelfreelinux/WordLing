@@ -38,4 +38,7 @@
     <string name="create_new_wordpack">Create new wordpack</string>
     <string name="delete_wordpack">Delete word pack</string>
     <string name="ask_delete_wordpack">Are you sure you want to delete this word pack?</string>
+    <string name="empty_wordlist">Create or import word pack to begin.</string>
+    <string name="add_words_you_want_to_learn">Add words you want to learn.</string>
+    <string name="add_possible_translations">Add possible translations.</string>
 </resources>

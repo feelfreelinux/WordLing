@@ -163,6 +163,9 @@ public class WordpacksListActivity extends WordlingActivity implements EditTextD
             }
         });
 
+        // Set empty view for showing if there's no information provided
+        listView.setEmptyView(findViewById(R.id.emptyView));
+
     }
 
     @Override

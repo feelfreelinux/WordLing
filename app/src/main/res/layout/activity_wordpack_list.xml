@@ -8,8 +8,19 @@
         android:id="@+id/wordpacks_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </ListView>
+
+    <ViewStub
+        android:id="@+id/emptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout="@layout/empty_wordlist" />
+    <View
+        android:id="@+id/holderView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </View>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/FABMenu"
         android:layout_width="wrap_content"
@@ -19,7 +30,7 @@
         android:src="@drawable/add"
         app:elevation="5dp"
         app:fabSize="normal"
-        app:layout_anchor="@id/wordpacks_list"
+        app:layout_anchor="@id/holderView"
         app:layout_anchorGravity="bottom|right|end" />
 
     <View
@@ -88,9 +99,6 @@
         android:text="@string/wordpackImportTitle"
         app:layout_anchor="@id/menu_importWordpack"
         app:layout_anchorGravity="left|center_vertical" />
-
-
-
 
 
 </android.support.design.widget.CoordinatorLayout>

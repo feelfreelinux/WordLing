@@ -2,6 +2,7 @@ package io.github.feelfreelinux.wordling.screens;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -46,6 +47,7 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
     private StorageWordpackManager strMgr;
     private Wordpack wordpack;
     private WordpackEntry entry;
+    private LinearLayout emptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
         wordList = new ArrayList<>();
 
         listView = (ListView) findViewById(R.id.list);
+        emptyView = (LinearLayout) findViewById(R.id.emptyView);
 
         // Set longClick listener
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -79,6 +82,8 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
                 return true;
             }
         });
+
+
 
         // Inflate Header View
         header = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_wordpack_editor_header, null, false);
@@ -106,6 +111,7 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
 
         // Fill data with edited wordpack
         if ((getIntent().getSerializableExtra("wordpack")) != null) {
+            emptyView.setVisibility(View.GONE);
             entry = (WordpackEntry) getIntent().getSerializableExtra("wordpack");
             wordpack = strMgr.getWordpackFromStorage(entry.key);
             if(wordpack != null) {
@@ -123,6 +129,8 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
                         translationLocale.getDisplayLanguage().substring(0, 1).toUpperCase() + translationLocale.getDisplayLanguage().substring(1),
                         "origin");
             }
+        } else {
+            emptyView.setVisibility(View.VISIBLE);
         }
 
         listView.addHeaderView(header, null, false);
@@ -146,6 +154,15 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
             }
         });
 
+        adapter.registerDataSetObserver(new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                if (adapter.isEmpty()) {
+                    emptyView.setVisibility(View.VISIBLE);
+                } else emptyView.setVisibility(View.GONE);
+            }
+        });
     }
 
     public void openWordEditor(@Nullable Word word, int position) {

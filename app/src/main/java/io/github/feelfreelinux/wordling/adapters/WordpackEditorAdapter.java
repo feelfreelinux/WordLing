@@ -17,6 +17,7 @@ public class WordpackEditorAdapter extends ArrayAdapter {
         super(context, 0, wordList);
     }
 
+
     @Override
     public View getView(int pos, View convertView, ViewGroup parent) {
         Word word = (Word) getItem(pos);

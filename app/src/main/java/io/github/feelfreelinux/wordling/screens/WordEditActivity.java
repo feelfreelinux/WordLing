@@ -2,6 +2,7 @@ package io.github.feelfreelinux.wordling.screens;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -28,12 +29,13 @@ import io.github.feelfreelinux.wordling.utils.EditTextDialogActionListener;
 import io.github.feelfreelinux.wordling.utils.WordlingActivity;
 
 public class WordEditActivity extends WordlingActivity implements EditTextDialogActionListener, DeleteWordListener {
-    ArrayList<String> wordList;
-    WordEditAdapter adapter;
-    EditText editText;
-    FloatingActionButton fab;
-    Toast toast;
-    Word word;
+    private ArrayList<String> wordList;
+    private WordEditAdapter adapter;
+    private EditText editText;
+    private FloatingActionButton fab;
+    private Toast toast;
+    private Word word;
+    private LinearLayout emptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,15 +51,19 @@ public class WordEditActivity extends WordlingActivity implements EditTextDialog
         LinearLayout header = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_edit_word_header, null, false);
         editText = (EditText) header.findViewById(R.id.word);
 
+        emptyView = (LinearLayout) findViewById(R.id.emptyView);
+
         // Set tooltip text
         ((TextView) header.findViewById(R.id.label)).setText(getString(R.string.word_in) + " " + getIntent().getStringExtra("termLanguage"));
 
         // Fill out data if intent contains data
         word = (Word) getIntent().getSerializableExtra("word");
         if (!(word == null)) {
+            emptyView.setVisibility(View.GONE);
             wordList = (ArrayList<String>) word.getOriginLangQuestions().clone();
             editText.setText(word.getTranslationLangQuestion());
-        }
+        } else emptyView.setVisibility(View.VISIBLE);
+
         // Set header view to list
         listView.addHeaderView(header, null, false);
         adapter = new WordEditAdapter(this, wordList);
@@ -98,7 +104,14 @@ public class WordEditActivity extends WordlingActivity implements EditTextDialog
             }
         });
 
-
+        adapter.registerDataSetObserver(new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                if (adapter.isEmpty()) emptyView.setVisibility(View.VISIBLE);
+                else emptyView.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override

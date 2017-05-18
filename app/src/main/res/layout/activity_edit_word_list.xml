@@ -10,6 +10,7 @@
         android:descendantFocusability="beforeDescendants"
         >
     </ListView>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addWordButton"
         android:layout_width="wrap_content"
@@ -20,4 +21,32 @@
         app:elevation="5dp"
         app:layout_anchor="@id/list"
         app:layout_anchorGravity="bottom|right|end" />
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/emptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/list"
+        app:layout_anchorGravity="bottom|center_horizontal"
+        android:layout_marginBottom="100dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/wordling_logo_drawable" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="@string/add_possible_translations" />
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

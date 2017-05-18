@@ -39,4 +39,7 @@
     <string name="no_word_error">Dodaj przynajmniej jedno słówko</string>
     <string name="ask_delete_wordpack">Czy napewno chcesz usunąć tą paczkę słówek?</string>
     <string name="delete_wordpack">Usuń paczkę słówek</string>
+    <string name="empty_wordlist">Stwórz lub zaimportuj paczkę słówek aby rozpocząć.</string>
+    <string name="add_possible_translations">Dodaj możliwe tłumaczenia.</string>
+    <string name="add_words_you_want_to_learn">Dodaj słowa których chcesz się nauczyć.</string>
 </resources>
