@@ -8,3 +8,5 @@ WordLing is modern, opensource Android app which helps you learn hard to remembe
 - WordLing uses TextToSpeech engine - it helps you learn proper pronunciation of your words
 - You don't need internet access
 - Application is completly free, you don't have to register anywhere
+- Word packs are shared on Github Gist
+- WordLing analyses which words you know, and sorts it.
