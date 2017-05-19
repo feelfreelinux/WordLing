@@ -17,7 +17,6 @@ public class WordpackEditorAdapter extends ArrayAdapter {
         super(context, 0, wordList);
     }
 
-
     @Override
     public View getView(int pos, View convertView, ViewGroup parent) {
         Word word = (Word) getItem(pos);
@@ -27,6 +26,8 @@ public class WordpackEditorAdapter extends ArrayAdapter {
         TextView translation = (TextView) convertView.findViewById(R.id.translation);
 
         origin.setText(word.getOriginLangQuestions().get(0));
+        // We want to add count of additional words, so let's check it now
+        if (word.getOriginLangQuestions().size() > 1) origin.setText(origin.getText() + " +" + Integer.toString(word.getOriginLangQuestions().size() -1) );
         translation.setText(word.getTranslationLangQuestion());
 
         return convertView;

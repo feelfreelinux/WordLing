@@ -74,17 +74,19 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Word word = ((Word) parent.getItemAtPosition(position));
-                WordDeleteMenuDialog dialog = new WordDeleteMenuDialog();
+                if (word != null) {
+                    WordDeleteMenuDialog dialog = new WordDeleteMenuDialog();
 
-                // Construct dialog bundle with string data
-                Bundle args = new Bundle();
+                    // Construct dialog bundle with string data
+                    Bundle args = new Bundle();
 
-                // Show word, get index
-                args.putString("word", word.getTranslationLangQuestion());
-                args.putInt("index", position-1);
+                    // Show word, get index
+                    args.putString("word", word.getTranslationLangQuestion());
+                    args.putInt("index", position - 1);
 
-                dialog.setArguments(args);
-                dialog.show(getFragmentManager(), "dialog");
+                    dialog.setArguments(args);
+                    dialog.show(getFragmentManager(), "dialog");
+                }
                 return true;
             }
         });

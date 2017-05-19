@@ -81,16 +81,18 @@ public class WordEditActivity extends WordlingActivity implements EditTextDialog
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 String word = ((String) parent.getItemAtPosition(position));
-                WordDeleteMenuDialog dialog = new WordDeleteMenuDialog();
-                // Construct dialog bundle with string data
-                Bundle args = new Bundle();
+                if (word != null) {
+                    WordDeleteMenuDialog dialog = new WordDeleteMenuDialog();
+                    // Construct dialog bundle with string data
+                    Bundle args = new Bundle();
 
-                // Show word, get index
-                args.putString("word", word);
+                    // Show word, get index
+                    args.putString("word", word);
 
-                args.putInt("index", position-1);
-                dialog.setArguments(args);
-                dialog.show(getFragmentManager(), "dialog");
+                    args.putInt("index", position - 1);
+                    dialog.setArguments(args);
+                    dialog.show(getFragmentManager(), "dialog");
+                }
                 return true;
             }
         });

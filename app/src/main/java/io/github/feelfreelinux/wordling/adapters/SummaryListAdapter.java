@@ -35,6 +35,8 @@ public class SummaryListAdapter extends ArrayAdapter {
             Word word = (Word) getItem(pos);
             // Only show first word.
             origin.setText(word.getOriginLangQuestions().get(0));
+            // We want to add count of additional words, so let's check it now
+            if (word.getOriginLangQuestions().size() > 1) origin.setText(origin.getText() + " +" + Integer.toString(word.getOriginLangQuestions().size() -1) );
             translation.setText(word.getTranslationLangQuestion());
             passed.setText(Integer.toString(word.getPassedAttempts()));
             failed.setText(Integer.toString(word.getFailedAttempts()));
