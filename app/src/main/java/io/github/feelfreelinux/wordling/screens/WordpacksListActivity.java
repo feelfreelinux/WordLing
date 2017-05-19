@@ -1,5 +1,6 @@
 package io.github.feelfreelinux.wordling.screens;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,12 +25,14 @@ import io.github.feelfreelinux.wordling.Values;
 import io.github.feelfreelinux.wordling.WordLing;
 import io.github.feelfreelinux.wordling.adapters.WordpackListAdapter;
 import io.github.feelfreelinux.wordling.dialogs.EditTextDialog;
+import io.github.feelfreelinux.wordling.dialogs.GithubUploadedDialog;
 import io.github.feelfreelinux.wordling.dialogs.WordListMenuDialog;
 import io.github.feelfreelinux.wordling.objects.Wordpack;
 import io.github.feelfreelinux.wordling.objects.WordpackEntry;
 import io.github.feelfreelinux.wordling.objects.WordpackList;
 import io.github.feelfreelinux.wordling.utils.CloseAnimationListener;
 import io.github.feelfreelinux.wordling.utils.EditTextDialogActionListener;
+import io.github.feelfreelinux.wordling.utils.GithubGistUploader;
 import io.github.feelfreelinux.wordling.utils.SortedSessionManager;
 import io.github.feelfreelinux.wordling.utils.StorageWordpackManager;
 import io.github.feelfreelinux.wordling.utils.WebWordpackDownloader;
@@ -80,14 +83,16 @@ public class WordpacksListActivity extends WordlingActivity implements EditTextD
                 closeFABMenu(new CloseAnimationListener.FabCloseListener() {
                     @Override
                     public void onClose() {
-                        // Open Import dialog
-                        Bundle args = new Bundle();
-                        args.putString("title", getResources().getString(R.string.wordpackImportTitle));
-                        args.putString("buttonLabel", getResources().getString(R.string.wordpackImportButton));
-                        args.putString("hint", getResources().getString(R.string.urlAddress));
-                        EditTextDialog dialog = new EditTextDialog();
-                        dialog.setArguments(args);
-                        dialog.show(getFragmentManager(), "dialog");
+                        if (((WordLing) getApplication()).isOnline()) {
+                            // Open Import dialog
+                            Bundle args = new Bundle();
+                            args.putString("title", getResources().getString(R.string.wordpackImportTitle));
+                            args.putString("buttonLabel", getResources().getString(R.string.wordpackImportButton));
+                            args.putString("hint", getResources().getString(R.string.urlAddress));
+                            EditTextDialog dialog = new EditTextDialog();
+                            dialog.setArguments(args);
+                            dialog.show(getFragmentManager(), "dialog");
+                        } else showNoInternetDialog();
                     }
                 });
             }
@@ -177,23 +182,26 @@ public class WordpacksListActivity extends WordlingActivity implements EditTextD
         }
         // Create spinner
         progress = new ProgressDialog(this);
-        progress.setTitle("Importing wordpack");
+        progress.setTitle(getString(R.string.importing_wordpack));
         progress.setCancelable(true);
         progress.show();
-        Log.v("url", url);
+
         // Start asynctask dowloading json data
         wwd = (WebWordpackDownloader) new WebWordpackDownloader(){
             @Override
             protected void onPostExecute(String data) {
                 progress.dismiss();
-                if (!data.isEmpty()) {
+                if (data != null && !data.isEmpty()) {
                     // Save wordpack, add it to list
                     Wordpack wordpack = new WordpackParser().getWordpackFromText(data);
                     if (!(wordpack == null)) { strMgr.addWordpackToMemory(wordpack);
                         refreshList();
                     }
                 } else {
-                    Log.v("err", "or");
+                    new AlertDialog.Builder(WordpacksListActivity.this)
+                            .setTitle(R.string.error)
+                            .setMessage(R.string.im_error)
+                            .setPositiveButton(android.R.string.ok, null).show();
                 }
             }
         }.execute(url);
@@ -289,5 +297,37 @@ public class WordpacksListActivity extends WordlingActivity implements EditTextD
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).show();
+    }
+    @SuppressLint("StaticFieldLeak")
+    public void uploadWordpackToWeb(WordpackEntry wordpackEntry) {
+        Wordpack wp = strMgr.getWordpackFromStorage(wordpackEntry.key);
+        progress = new ProgressDialog(this);
+        progress.setTitle(getString(R.string.uploading_wp));
+        progress.setCancelable(true);
+        progress.show();
+        new GithubGistUploader() {
+            @Override
+            protected void onPostExecute(String data) {
+                progress.dismiss();
+                if (!data.isEmpty()) {
+                    Bundle args = new Bundle();
+                    args.putString("url", data);
+                    GithubUploadedDialog dialog = new GithubUploadedDialog();
+                    dialog.setArguments(args);
+                    dialog.show(getFragmentManager(), "dialog");
+                } else {
+                    new AlertDialog.Builder(WordpacksListActivity.this)
+                            .setTitle(R.string.error)
+                            .setMessage(R.string.up_error)
+                            .setPositiveButton(android.R.string.ok, null).show();
+                }
+            }
+        }.execute(wp);
+    }
+    public void showNoInternetDialog(){
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.internet_connection_title)
+                .setMessage(R.string.internet_connection)
+                .setPositiveButton(android.R.string.ok, null).show();
     }
 }

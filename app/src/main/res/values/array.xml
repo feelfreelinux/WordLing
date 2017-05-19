@@ -2,6 +2,7 @@
 <resources>
     <array name="wordListMenuList">
         <item>@string/edit</item>
+        <item>@string/gist_upload</item>
         <item>@string/deleteWordpack</item>
     </array>
     <array name="wordDeleteMenuList">

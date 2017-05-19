@@ -30,7 +30,7 @@ public class SortedSessionManager implements Serializable {
         this.key = key;
         generator = new Random();
 
-        // Sort word pack, by the correct anwsers rate
+        // Sort word pack, by the correct answers rate
         Collections.sort(this.wordpack.pack, new Comparator<Word>() {
             @Override
             public int compare(Word o1, Word o2) {

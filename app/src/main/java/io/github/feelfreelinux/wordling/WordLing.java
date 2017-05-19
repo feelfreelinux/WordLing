@@ -1,6 +1,9 @@
 package io.github.feelfreelinux.wordling;
 
 import android.app.Application;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
 
@@ -60,5 +63,11 @@ public class WordLing extends Application {
             tts.stop();
             tts.shutdown();
         }
+    }
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }

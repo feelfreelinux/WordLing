@@ -7,4 +7,5 @@ public interface Values {
             WordpackEditor = 120,
             DefaultErrorMargin = 80,
             WordpackEdited = 40;
+    String GKey = "";
 }

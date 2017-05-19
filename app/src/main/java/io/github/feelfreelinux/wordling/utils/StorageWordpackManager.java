@@ -26,7 +26,7 @@ public class StorageWordpackManager {
 
     public WordpackList addWordpackToMemory(Wordpack wordpack){
         String uniqueKey = generateUniqueKey(4);
-        saveJSONtoMemory(uniqueKey, wordpack.toJSONString());
+        saveJSONtoMemory(uniqueKey, wordpack.toJSONString(true));
         WordpackList wordpackList = getWordpackListFromStorage();
 
         wordpackList.addWordpackEntry(new WordpackEntry(uniqueKey, wordpack.getTitle(), wordpack.getDescription()));

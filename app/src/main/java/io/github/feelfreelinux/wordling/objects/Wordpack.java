@@ -31,7 +31,7 @@ public class Wordpack implements Serializable {
     }
     public int getErrorMargin() {return errorMargin;}
     // Convert wordpack to json string
-    public String toJSONString() {
+    public String toJSONString(boolean safeProgress) {
         JSONObject rawData = new JSONObject();
         try {
             rawData.put("description", this.description);
@@ -57,8 +57,10 @@ public class Wordpack implements Serializable {
 
                     singleWord.put("from", originLanguage);
                     singleWord.put("to", translateLanguage);
-                    singleWord.put("passed", word.getPassedAttempts());
-                    singleWord.put("failed", word.getFailedAttempts());
+                    if (safeProgress) {
+                        singleWord.put("passed", word.getPassedAttempts());
+                        singleWord.put("failed", word.getFailedAttempts());
+                    }
 
                     pack.put(singleWord);
                 }
@@ -71,10 +73,7 @@ public class Wordpack implements Serializable {
         return rawData.toString();
     }
     public boolean compareTo(Wordpack wordpackCompare) {
-        Log.v("DOGGO", wordpackCompare.toJSONString());
-        Log.v("DOGGER", toJSONString());
-        if (wordpackCompare.toJSONString().equals(toJSONString())) Log.v("COMPARE", "OKOK");
-        return wordpackCompare.toJSONString().equals(toJSONString());
+        return wordpackCompare.toJSONString(true).equals(toJSONString(true));
     }
     public String getTitle(){
         return title;

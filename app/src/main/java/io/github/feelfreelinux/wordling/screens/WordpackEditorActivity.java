@@ -248,7 +248,7 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
             // Validate, save, and exit
             if (entry != null) {
                 strMgr.editWordpack(entry.key,
-                        getWordpack().toJSONString(),
+                        getWordpack().toJSONString(true),
                         getWordpack().getTitle(),
                         getWordpack().getDescription());
             } else strMgr.addWordpackToMemory(getWordpack());

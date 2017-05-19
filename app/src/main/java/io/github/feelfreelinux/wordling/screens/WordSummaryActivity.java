@@ -82,7 +82,7 @@ public class WordSummaryActivity extends WordlingActivity {
         if(!getIntent().getBooleanExtra("REPEATED", true)) {
             // Save progress
             StorageWordpackManager strMgr = new StorageWordpackManager(this);
-            strMgr.saveJSONtoMemory(manager.getKey(), manager.getWordpack().toJSONString());
+            strMgr.saveJSONtoMemory(manager.getKey(), manager.getWordpack().toJSONString(true));
         }
 
         nextButton = (Button) findViewById(R.id.nextButton);
