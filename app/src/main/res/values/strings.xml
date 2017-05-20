@@ -21,6 +21,7 @@
     <string name="skip">Skip</string>
     <string name="done">DONE</string>
     <string name="edit_wordpack">Edit word pack</string>
+    <string name="edit_word">Edit word</string>
     <string name="title">Title</string>
     <string name="wordpack_description">Word pack description</string>
     <string name="select_language">Select language</string>

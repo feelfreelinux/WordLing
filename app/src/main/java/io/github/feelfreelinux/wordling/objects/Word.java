@@ -3,7 +3,6 @@ package io.github.feelfreelinux.wordling.objects;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import io.github.feelfreelinux.wordling.Values;
 import io.github.feelfreelinux.wordling.utils.JaroDistance;
 
 public class Word implements Serializable, Cloneable {
@@ -36,7 +35,7 @@ public class Word implements Serializable, Cloneable {
     }
 
     public boolean checkAnswer(String answer, int errorMargin){
-        if(new JaroDistance().calculate(answer.toLowerCase(), this.langTo.toLowerCase()) > (errorMargin/100)) {
+        if(new JaroDistance().calculate(answer.toLowerCase(), this.langTo.toLowerCase()) >= ((double) errorMargin)/100) {
             if(!repeated && !skipped) this.passedAttempts++;
             return true;
         }

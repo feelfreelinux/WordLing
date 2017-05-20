@@ -42,6 +42,8 @@ public class WordEditActivity extends WordlingActivity implements EditTextDialog
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_word_list);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        setTitle(getString(R.string.edit_word));
+
         // Show "back button" in action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);;
         wordList = new ArrayList<>();

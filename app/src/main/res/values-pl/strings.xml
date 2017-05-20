@@ -22,6 +22,7 @@
     <string name="skip">Pomiń</string>
     <string name="done">GOTOWE</string>
     <string name="edit_wordpack">Edytuj paczkę słówek</string>
+    <string name="edit_word">Edytuj słówko</string>
     <string name="title">Tytuł</string>
     <string name="wordpack_description">Opis paczki słówek</string>
     <string name="select_language">Wybierz język</string>
