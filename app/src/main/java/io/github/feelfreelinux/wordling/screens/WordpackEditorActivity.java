@@ -12,6 +12,7 @@ import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,9 +41,6 @@ import io.github.feelfreelinux.wordling.utils.StorageWordpackManager;
 import io.github.feelfreelinux.wordling.utils.WordlingActivity;
 
 public class WordpackEditorActivity extends WordlingActivity implements DeleteWordListener {
-    private ListView listView;
-    private LinearLayout header;
-    private FloatingActionButton fab;
     private EditText description, title;
     private Button langOrigin, langTranslation;
     private List<Word> wordList;
@@ -66,7 +64,7 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
         strMgr = new StorageWordpackManager(this);
         wordList = new ArrayList<>();
 
-        listView = (ListView) findViewById(R.id.list);
+        ListView listView = (ListView) findViewById(R.id.list);
         emptyView = (LinearLayout) findViewById(R.id.emptyView);
 
         // Set longClick listener
@@ -94,7 +92,7 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
 
 
         // Inflate Header View
-        header = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_wordpack_editor_header, null, false);
+        LinearLayout header = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_wordpack_editor_header, null, false);
 
         // Get edit texts
         description = (EditText) header.findViewById(R.id.description);
@@ -157,7 +155,7 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
             }
         });
 
-        fab = (FloatingActionButton) findViewById(R.id.addWordButton);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.addWordButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,6 +175,12 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate menu
+        getMenuInflater().inflate(R.menu.editor_menu, menu);
+        return true;
+    }
     public void openWordEditor(@Nullable Word word, int position) {
         if (!(termLang == null) && !(definitionLang == null)) {
             Intent intent = new Intent(getApplicationContext(), WordEditActivity.class);
@@ -310,6 +314,8 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
+            case R.id.editor_menu:
+                this.showAskAlert();
         }
         return true;
     }

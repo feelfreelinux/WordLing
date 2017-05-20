@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">WordLing</string>
+    <string name="app_name">Wordling</string>
     <string name="activityCloseConfirmation">Czy na pewno chcesz wyjść z tego treningu?</string>
     <string name="activityCloseConfirmationTitle">Wyjdź z Treningu</string>
     <string name="checkButton">Sprawdź</string>
@@ -31,13 +31,13 @@
     <string name="add_definition">Dodaj tłumaczenie</string>
     <string name="translation_error">Musisz dodać co najmniej jedno tłumaczenie</string>
     <string name="translations">Tłumaczenia</string>
-    <string name="edit_translation">Edytuj definicje</string>
+    <string name="edit_translation">Edytuj tłumaczenie</string>
     <string name="field_empty">Te pole nie może być puste</string>
     <string name="save_changes">Zapisać zmiany?</string>
     <string name="select_language_toast">Najpierw wybierz język</string>
     <string name="create_new_wordpack">Stwórz nową paczkę słówek</string>
     <string name="no_word_error">Dodaj przynajmniej jedno słówko</string>
-    <string name="ask_delete_wordpack">Czy napewno chcesz usunąć tą paczkę słówek?</string>
+    <string name="ask_delete_wordpack">Czy napewno chcesz usunąć tę paczkę słówek?</string>
     <string name="delete_wordpack">Usuń paczkę słówek</string>
     <string name="empty_wordlist">Stwórz lub zaimportuj paczkę słówek aby rozpocząć.</string>
     <string name="add_possible_translations">Dodaj możliwe tłumaczenia.</string>
@@ -51,7 +51,7 @@
     <string name="uploading_wp">Udostępnianie paczki słówek…</string>
     <string name="up_error">Wystąpił problem podczas udostępniania paczki słówek.</string>
     <string name="error">Błąd</string>
-    <string name="internet_connection">Sprawdź połączenie sieciowe, i spróbuj ponownie.</string>
+    <string name="internet_connection">Sprawdź połączenie sieciowe i spróbuj ponownie.</string>
     <string name="internet_connection_title">Brak połączenia z siecią.</string>
     <string name="im_error">Wystąpił problem podczas importowania paczki słówek.</string>
 </resources>

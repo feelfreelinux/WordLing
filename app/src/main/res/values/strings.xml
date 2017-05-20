@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WordLing</string>
+    <string name="app_name">Wordling</string>
     <string name="wordpacksListTitle">Select Word Pack</string>
     <string name="nextButton">Next</string>
     <string name="checkButton">Check</string>
@@ -28,7 +28,7 @@
     <string name="translation_in">Translation in</string>
     <string name="add_definition">Add translation</string>
     <string name="add">Add</string>
-    <string name="edit_translation">Edit definition</string>
+    <string name="edit_translation">Edit translation</string>
     <string name="translations">Translations</string>
     <string name="field_empty">This field cannot be blank.</string>
     <string name="save_changes">Save changes?</string>

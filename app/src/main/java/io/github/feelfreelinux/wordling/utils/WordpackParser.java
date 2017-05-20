@@ -27,6 +27,7 @@ public class WordpackParser {
                 String description = jsonData.getString("description");
                 String title = jsonData.getString("title");
                 int errorMargin;
+                // Set defaults if not defined
                 if (jsonData.has("error_margin")) errorMargin = jsonData.getInt("error_margin");
                 else errorMargin = Values.DefaultErrorMargin; // Default value
 
