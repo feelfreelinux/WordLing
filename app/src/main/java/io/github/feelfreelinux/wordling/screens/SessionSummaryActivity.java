@@ -1,6 +1,7 @@
 package io.github.feelfreelinux.wordling.screens;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -36,6 +37,7 @@ public class SessionSummaryActivity extends WordlingActivity {
         ((TextView) header.findViewById(R.id.result)).setText(getResources().getString(R.string.result));
 
         TextView tv = (TextView) header.findViewById(R.id.percentText);
+        Log.v("ASD", Integer.toString(manager.getPassedCount()));
         int percentRate = (manager.getPassedCount() * 100) / manager.getWordCount();
         tv.setText(Integer.toString(percentRate)+"%");
 

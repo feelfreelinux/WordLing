@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -89,9 +90,10 @@ public class InputActivity extends WordlingActivity {
             intent.putExtra("SortedSessionManager", manager);
             intent.putExtra("REPEATED", word.isRepeated());
             // Pass anwser result
-            if (word.checkAnswer(anwser, manager.getWordpack().getErrorMargin()))
+            if (word.checkAnswer(anwser, manager.getWordpack().getErrorMargin())) {
                 intent.putExtra("PASSED", true);
-                if(!word.isRepeated() || word.isSkipped()) manager.passed();
+                if (!word.isRepeated() || word.isSkipped()) manager.passed();
+            }
             else {
                 intent.putExtra("PASSED", false);
                 manager.addWord(word, false);
