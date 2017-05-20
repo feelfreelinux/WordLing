@@ -181,6 +181,7 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
         getMenuInflater().inflate(R.menu.editor_menu, menu);
         return true;
     }
+
     public void openWordEditor(@Nullable Word word, int position) {
         if (!(termLang == null) && !(definitionLang == null)) {
             Intent intent = new Intent(getApplicationContext(), WordEditActivity.class);
@@ -313,7 +314,7 @@ public class WordpackEditorActivity extends WordlingActivity implements DeleteWo
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                this.finish();
+                this.showAskAlert();
             case R.id.editor_menu:
                 this.showAskAlert();
         }

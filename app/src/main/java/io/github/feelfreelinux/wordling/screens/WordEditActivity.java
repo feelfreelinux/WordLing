@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -119,6 +120,13 @@ public class WordEditActivity extends WordlingActivity implements EditTextDialog
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate menu
+        getMenuInflater().inflate(R.menu.editor_menu, menu);
+        return true;
+    }
+
+    @Override
     public void editTextAction(String text, Bundle args) {
         if(args.containsKey("position")) {
             wordList.set(args.getInt("position")-1, text);
@@ -211,6 +219,8 @@ public class WordEditActivity extends WordlingActivity implements EditTextDialog
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                showAskAlert();
+            case R.id.editor_menu:
                 showAskAlert();
         }
         return true;
