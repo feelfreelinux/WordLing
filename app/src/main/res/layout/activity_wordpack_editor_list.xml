@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/add"
+        app:srcCompat="@drawable/add"
         app:elevation="5dp"
         app:fabSize="normal"
         app:layout_anchor="@id/list"
@@ -37,7 +37,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/wordling_logo_drawable" />
+            app:srcCompat="@drawable/wordling_logo_drawable" />
 
         <TextView
             android:layout_width="wrap_content"

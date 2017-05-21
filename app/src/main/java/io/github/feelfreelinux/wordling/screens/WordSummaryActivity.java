@@ -90,7 +90,7 @@ public class WordSummaryActivity extends WordlingActivity {
             @Override
             public void onClick(View v) {
                 // Let manager handle it
-                manager.procced(getApplicationContext(), ((WordLing) getApplication()));
+                manager.procced(WordSummaryActivity.this, ((WordLing) getApplication()));
                 // Bye
                 finish();
             }

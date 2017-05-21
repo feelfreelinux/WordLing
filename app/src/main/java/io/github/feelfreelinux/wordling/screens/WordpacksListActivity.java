@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -55,6 +56,11 @@ public class WordpacksListActivity extends WordlingActivity implements EditTextD
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wordpack_list);
+
+        // Test text to speech
+        Intent checkIntent = new Intent();
+        checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+        startActivityForResult(checkIntent, Values.TTSCheckData);
 
         // Set title
         setTitle(getResources().getString(R.string.wordpacksListTitle));
@@ -148,7 +154,7 @@ public class WordpacksListActivity extends WordlingActivity implements EditTextD
                     // Start new session
                     Intent inputScreen = new Intent(getApplicationContext(), WordInputActivity.class);
                     inputScreen.putExtra("SortedSessionManager", sm);
-                    getApplicationContext().startActivity(inputScreen);
+                    startActivity(inputScreen);
                 }
             }
         });
@@ -281,7 +287,20 @@ public class WordpacksListActivity extends WordlingActivity implements EditTextD
         // Handle word editor exit
         if (resultCode == Values.WordpackEdited) {
             refreshList();
-        }
+        } else
+            if (requestCode == Values.TTSCheckData) {
+                if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+                    // success, create the TTS instance
+                    ((WordLing) getApplication()).initTTS(Locale.US);
+                } else {
+                    // missing data, install it
+                    Intent installIntent = new Intent();
+                    installIntent.setAction(
+                            TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                    startActivity(installIntent);
+                }
+            }
+
     }
 
     public void safeDeleteWordpack(final String key) {

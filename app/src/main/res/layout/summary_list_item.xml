@@ -8,27 +8,27 @@
         android:id="@+id/origin"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:layout_weight="1"/>
     <TextView
         android:gravity="center"
         android:id="@+id/translation"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:layout_weight="1"/>
     <TextView
         android:gravity="center"
         android:id="@+id/passedCount"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:layout_weight="1"/>
     <TextView
         android:gravity="center"
         android:id="@+id/failedCount"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:layout_weight="1"/>
 </LinearLayout>

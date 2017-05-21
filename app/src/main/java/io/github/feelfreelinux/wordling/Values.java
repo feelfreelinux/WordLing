@@ -6,6 +6,7 @@ public interface Values {
             WordEditActivityBlank = 70,
             WordpackEditor = 120,
             DefaultErrorMargin = 80,
-            WordpackEdited = 40;
+            WordpackEdited = 40,
+            TTSCheckData = 22;
     String GKey = "";
 }

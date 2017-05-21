@@ -1,13 +1,18 @@
 package io.github.feelfreelinux.wordling;
 
 import android.app.Application;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 
 import java.util.Locale;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * This is application class. Used to keep TTS object here
@@ -69,5 +74,21 @@ public class WordLing extends Application {
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    /**
+     * Ask the current default engine to launch the matching INSTALL_TTS_DATA activity
+     * so the required TTS files are properly installed.
+     */
+    public void installVoiceData() {
+        Intent intent = new Intent(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setPackage("com.google.android.tts"/*replace with the package name of the target TTS engine*/);
+        try {
+            Log.v(TAG, "Installing voice data: " + intent.toUri(0));
+            startActivity(intent);
+        } catch (ActivityNotFoundException ex) {
+            Log.e(TAG, "Failed to install TTS data, no acitivty found for " + intent + ")");
+        }
     }
 }
