@@ -8,5 +8,5 @@ public interface Values {
             DefaultErrorMargin = 80,
             WordpackEdited = 40,
             TTSCheckData = 22;
-    String GKey = "";
+    String GKey = "AIzaSyAYfTf9yPS7vdSya348ozVoZgzNNhrzXok";
 }
