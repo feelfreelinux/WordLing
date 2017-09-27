@@ -2,8 +2,11 @@ package io.github.feelfreelinux.wordling.screens;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -17,8 +20,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import io.github.feelfreelinux.wordling.R;
@@ -57,10 +62,16 @@ public class WordpacksListActivity extends WordlingActivity implements EditTextD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wordpack_list);
 
-        // Test text to speech
-        Intent checkIntent = new Intent();
-        checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-        startActivityForResult(checkIntent, Values.TTSCheckData);
+        PackageManager pm = getPackageManager();
+        Intent installIntent = new Intent();
+        installIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+        ResolveInfo resolveInfo = pm.resolveActivity( installIntent, PackageManager.MATCH_DEFAULT_ONLY );
+
+        if( resolveInfo == null ) {
+            Toast.makeText(this, R.string.tts_not_available, Toast.LENGTH_SHORT).show();
+        } else {
+            startActivityForResult( installIntent, Values.TTSCheckData );
+        }
 
         // Set title
         setTitle(getResources().getString(R.string.wordpacksListTitle));
@@ -288,18 +299,18 @@ public class WordpacksListActivity extends WordlingActivity implements EditTextD
         if (resultCode == Values.WordpackEdited) {
             refreshList();
         } else
-            if (requestCode == Values.TTSCheckData) {
-                if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-                    // success, create the TTS instance
-                    ((WordLing) getApplication()).initTTS(Locale.US);
-                } else {
-                    // missing data, install it
-                    Intent installIntent = new Intent();
-                    installIntent.setAction(
-                            TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-                    startActivity(installIntent);
-                }
+        if (requestCode == Values.TTSCheckData) {
+            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+                // success, create the TTS instance
+                ((WordLing) getApplication()).initTTS(Locale.US);
+            } else {
+                // missing data, install it
+                Intent installIntent = new Intent();
+                installIntent.setAction(
+                        TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                startActivity(installIntent);
             }
+        }
 
     }
 
@@ -348,5 +359,12 @@ public class WordpacksListActivity extends WordlingActivity implements EditTextD
                 .setTitle(R.string.internet_connection_title)
                 .setMessage(R.string.internet_connection)
                 .setPositiveButton(android.R.string.ok, null).show();
+    }
+
+    public boolean isActivityCallable( String packageName, String className) {
+        final Intent intent = new Intent();
+        intent.setClassName(packageName, className);
+        List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
     }
 }

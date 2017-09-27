@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme" >
         <activity android:name=".screens.WordInputActivity" android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity android:name=".screens.SessionSummaryActivity"/>
+        <activity android:name=".screens.InputActivity"/>
         <activity android:name=".screens.WordSummaryActivity"/>
         <activity android:name=".screens.WordpackEditorActivity" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".screens.WordEditActivity" android:windowSoftInputMode="adjustPan"/>

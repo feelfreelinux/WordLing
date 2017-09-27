@@ -55,4 +55,5 @@
     <string name="internet_connection">Sprawdź połączenie sieciowe i spróbuj ponownie.</string>
     <string name="internet_connection_title">Brak połączenia z siecią.</string>
     <string name="im_error">Wystąpił problem podczas importowania paczki słówek.</string>
+    <string name="tts_not_available">Silnik TTS jest niedostępny na tym urządeniu.</string>
 </resources>
